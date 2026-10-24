@@ -1,0 +1,17 @@
+# Compiled Swift application
+airpod-bridge/build/
+
+# macOS temporary files
+.DS_Store
+.AppleDouble
+
+# Swift build artifacts
+.build/
+.swiftpm/
+
+# Godot generated cache
+game/.godot/
+
+# Editor temporary files
+*.swp
+*~
