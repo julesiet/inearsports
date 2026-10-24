@@ -1,0 +1,54 @@
+[gd_scene format=3 uid="uid://deqmrwa6di3op"]
+
+[ext_resource type="Script" uid="uid://bf4ugrlw850hx" path="res://scripts/input/keyboard_adapter.gd" id="1_5qb6a"]
+[ext_resource type="PackedScene" uid="uid://cqxw1w2kxsgqi" path="res://scenes/world/TennisCourt.tscn" id="1_c8ygb"]
+[ext_resource type="PackedScene" uid="uid://bj28oxegdgy4g" path="res://scenes/camera/tennis_camera.tscn" id="2_5qb6a"]
+[ext_resource type="PackedScene" uid="uid://bxdqxp35pvo2x" path="res://scenes/player/tennis_player.tscn" id="2_hvvs3"]
+[ext_resource type="Script" uid="uid://7hijpbfhr2wd" path="res://scenes/world/keyboard_test_driver.gd" id="4_hvvs3"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7t325"]
+albedo_color = Color(0, 0.083333254, 1, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_huivl"]
+material = SubResource("StandardMaterial3D_7t325")
+radius = 0.2
+height = 0.45
+
+[node name="TennisMatch" type="Node3D" unique_id=828309337]
+
+[node name="Court" parent="." unique_id=217646986 instance=ExtResource("1_c8ygb")]
+
+[node name="Players" type="Node3D" parent="." unique_id=2069483414]
+
+[node name="Player1" parent="Players" unique_id=1357167432 instance=ExtResource("2_hvvs3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4)
+
+[node name="Player2" parent="Players" unique_id=309120936 instance=ExtResource("2_hvvs3")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 1, -4)
+
+[node name="RacketMesh" parent="Players/Player2/VisualRoot/RacketAnchor/Racket/AimPivot/SwingPivot" parent_id_path=PackedInt32Array(309120936, 57044754, 1718386755) index="0" unique_id=1618720129]
+mesh = SubResource("SphereMesh_huivl")
+
+[node name="LocalCamera" parent="." unique_id=1631060452 instance=ExtResource("2_5qb6a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 5)
+
+[node name="MatchSystems" type="Node" parent="." unique_id=632512295]
+
+[node name="MatchState" type="Node" parent="MatchSystems" unique_id=634999160]
+
+[node name="ScoreManager" type="Node" parent="MatchSystems" unique_id=1113757598]
+
+[node name="ServeManager" type="Node" parent="MatchSystems" unique_id=638894061]
+
+[node name="CourtRules" type="Node" parent="MatchSystems" unique_id=1927658921]
+
+[node name="KeyboardTestDriver" type="Node" parent="MatchSystems" unique_id=1997884282]
+script = ExtResource("4_hvvs3")
+
+[node name="KeyboardAdapter" type="Node" parent="MatchSystems/KeyboardTestDriver" unique_id=966645992]
+script = ExtResource("1_5qb6a")
+
+[node name="Effects" type="Node3D" parent="." unique_id=1671217439]
+
+[editable path="Players/Player2"]
+[editable path="Players/Player2/VisualRoot/RacketAnchor/Racket"]

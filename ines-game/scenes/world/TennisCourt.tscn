@@ -1,0 +1,111 @@
+[gd_scene format=3 uid="uid://cqxw1w2kxsgqi"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_olqn3"]
+albedo_color = Color(0, 0.34901962, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_u8nn2"]
+material = SubResource("StandardMaterial3D_olqn3")
+size = Vector3(10, 0.2, 24)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qcu71"]
+size = Vector3(10, 0.2, 24)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u8nn2"]
+albedo_color = Color(0.5, 0.5, 0.5, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qcu71"]
+material = SubResource("StandardMaterial3D_u8nn2")
+size = Vector3(6, 2, 0.05)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u8nn2"]
+size = Vector3(6, 2, 0.05)
+
+[sub_resource type="Environment" id="Environment_u8nn2"]
+background_mode = 2
+ambient_light_source = 3
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_sb8ua"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_1fwg0"]
+material = SubResource("StandardMaterial3D_sb8ua")
+size = Vector3(0.05, 0.001, 18)
+subdivide_width = 1
+
+[sub_resource type="BoxMesh" id="BoxMesh_ss5wv"]
+material = SubResource("StandardMaterial3D_sb8ua")
+size = Vector3(0.05, 0.001, 18)
+
+[sub_resource type="BoxMesh" id="BoxMesh_c3q5q"]
+material = SubResource("StandardMaterial3D_sb8ua")
+size = Vector3(6, 0.001, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_qawaf"]
+material = SubResource("StandardMaterial3D_sb8ua")
+size = Vector3(6, 0.001, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_yeoau"]
+material = SubResource("StandardMaterial3D_sb8ua")
+size = Vector3(6, 0.001, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_7swhf"]
+material = SubResource("StandardMaterial3D_sb8ua")
+size = Vector3(6, 0.001, 0.05)
+
+[sub_resource type="BoxMesh" id="BoxMesh_xjcbm"]
+material = SubResource("StandardMaterial3D_sb8ua")
+size = Vector3(0.05, 0.001, 8.8)
+
+[node name="TennisCourt" type="Node3D" unique_id=217646986]
+
+[node name="Ground" type="StaticBody3D" parent="." unique_id=1750100780]
+
+[node name="GroundMesh" type="MeshInstance3D" parent="Ground" unique_id=1216037234]
+mesh = SubResource("BoxMesh_u8nn2")
+
+[node name="GroundCollision" type="CollisionShape3D" parent="Ground" unique_id=1827093784]
+shape = SubResource("BoxShape3D_qcu71")
+
+[node name="Net" type="StaticBody3D" parent="." unique_id=403224070]
+
+[node name="NetMesh" type="MeshInstance3D" parent="Net" unique_id=1997987784]
+mesh = SubResource("BoxMesh_qcu71")
+
+[node name="NetCollision" type="CollisionShape3D" parent="Net" unique_id=1571676888]
+shape = SubResource("BoxShape3D_u8nn2")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1777727445]
+transform = Transform3D(1, 0, 0, 0, 1.3418204, 0.58495766, 0, -0.9677513, 0.8110638, 0, 7.01, 5.06)
+light_angular_distance = 75.2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1755718988]
+environment = SubResource("Environment_u8nn2")
+
+[node name="CourtLines" type="Node3D" parent="." unique_id=925799362]
+
+[node name="LeftSideLine" type="MeshInstance3D" parent="CourtLines" unique_id=995368606]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.201, 0)
+mesh = SubResource("BoxMesh_1fwg0")
+
+[node name="RightSideLine" type="MeshInstance3D" parent="CourtLines" unique_id=17959540]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.201, 0)
+mesh = SubResource("BoxMesh_ss5wv")
+
+[node name="TopBaseLine" type="MeshInstance3D" parent="CourtLines" unique_id=117003646]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, -9)
+mesh = SubResource("BoxMesh_c3q5q")
+
+[node name="BottomBaseLine" type="MeshInstance3D" parent="CourtLines" unique_id=1965819816]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, 9)
+mesh = SubResource("BoxMesh_qawaf")
+
+[node name="NSL" type="MeshInstance3D" parent="CourtLines" unique_id=247807931]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, -4.4)
+mesh = SubResource("BoxMesh_yeoau")
+
+[node name="SSL" type="MeshInstance3D" parent="CourtLines" unique_id=178526747]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, 4.4)
+mesh = SubResource("BoxMesh_7swhf")
+
+[node name="CenterLine" type="MeshInstance3D" parent="CourtLines" unique_id=1016553455]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.201, 0)
+mesh = SubResource("BoxMesh_xjcbm")

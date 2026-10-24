@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bxdqxp35pvo2x"]
+
+[ext_resource type="Script" uid="uid://duu7p0gl1gsgr" path="res://scripts/player/tennis_player.gd" id="1_ka5fa"]
+[ext_resource type="PackedScene" uid="uid://bpgnxoudjoesw" path="res://scenes/player/racket.tscn" id="1_on7oo"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_u8nn2"]
+size = Vector3(0.5, 1.5, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_u8nn2"]
+radius = 0.25
+height = 1.5
+
+[node name="TennisPlayer" type="CharacterBody3D" unique_id=1357167432]
+script = ExtResource("1_ka5fa")
+
+[node name="PlayerCollision" type="CollisionShape3D" parent="." unique_id=1363705138]
+shape = SubResource("BoxShape3D_u8nn2")
+
+[node name="VisualRoot" type="Node3D" parent="." unique_id=635863078]
+
+[node name="PlayerMesh" type="MeshInstance3D" parent="VisualRoot" unique_id=843364046]
+mesh = SubResource("CapsuleMesh_u8nn2")
+
+[node name="RacketAnchor" type="Node3D" parent="VisualRoot" unique_id=456657037]
+
+[node name="Racket" parent="VisualRoot/RacketAnchor" unique_id=57044754 instance=ExtResource("1_on7oo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.585, 0.41, -0.775)

@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://deqmrwa6di3op"]
+
+[ext_resource type="PackedScene" uid="uid://cqxw1w2kxsgqi" path="res://scenes/world/TennisCourt.tscn" id="1_c8ygb"]
+[ext_resource type="PackedScene" uid="uid://bj28oxegdgy4g" path="res://scenes/camera/tennis_camera.tscn" id="2_5qb6a"]
+[ext_resource type="PackedScene" uid="uid://bxdqxp35pvo2x" path="res://scenes/player/tennis_player.tscn" id="2_hvvs3"]
+
+[sub_resource type="GDScript" id="GDScript_7t325"]
+script/source = "extends Node
+
+## Reads the CP-04 Input Map actions and returns a shared ControllerFrame.
+## Call read_frame() from the owning controller's _physics_process().
+@export var move_left_action: StringName = &\"move_left\"
+@export var move_right_action: StringName = &\"move_right\"
+@export var swing_action: StringName = &\"swing\"
+
+var _next_swing_id: int = 0
+var _sequence: int = 0
+
+
+func read_frame() -> ControllerFrame:
+	_sequence += 1
+	var move_x := Input.get_axis(move_left_action, move_right_action)
+	var swing_id := -1
+	var swing_strength := 0.0
+
+	# Edge-triggered so holding Space does not generate a swing each frame.
+	if Input.is_action_just_pressed(swing_action):
+		_next_swing_id += 1
+		swing_id = _next_swing_id
+		swing_strength = 1.0
+
+	return ControllerFrame.new(
+		move_x,
+		Vector2.ZERO,
+		swing_id,
+		swing_strength,
+		_sequence,
+		Time.get_ticks_msec(),
+		true
+	)
+"
+
+[node name="TennisMatch" type="Node3D" unique_id=828309337]
+script = SubResource("GDScript_7t325")
+
+[node name="Court" parent="." unique_id=217646986 instance=ExtResource("1_c8ygb")]
+
+[node name="Players" type="Node3D" parent="." unique_id=2069483414]
+
+[node name="Player1" parent="Players" unique_id=1357167432 instance=ExtResource("2_hvvs3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4)
+
+[node name="LocalCamera" parent="." unique_id=1631060452 instance=ExtResource("2_5qb6a")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4.5)
+
+[node name="MatchSystems" type="Node" parent="." unique_id=632512295]
+
+[node name="MatchState" type="Node" parent="MatchSystems" unique_id=634999160]
+
+[node name="ScoreManager" type="Node" parent="MatchSystems" unique_id=1113757598]
+
+[node name="ServeManager" type="Node" parent="MatchSystems" unique_id=638894061]
+
+[node name="CourtRules" type="Node" parent="MatchSystems" unique_id=1927658921]
+
+[node name="Effects" type="Node3D" parent="." unique_id=1671217439]
