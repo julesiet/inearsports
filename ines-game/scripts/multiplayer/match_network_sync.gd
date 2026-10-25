@@ -1,6 +1,7 @@
 extends Node
 
 const SNAPSHOT_INTERVAL := 1.0 / 20.0
+const FINISHED_PHASE := 4
 
 @onready var match_root: Node3D = get_node("../..")
 @onready var ball: Node3D = get_node("../../Ball")
@@ -35,6 +36,8 @@ func _physics_process(delta: float) -> void:
 
 
 func apply_controller_frame(player_id: int, frame: ControllerFrame) -> void:
+	if int(match_state.get("phase")) == FINISHED_PHASE:
+		return
 	if player_id != 1 and player_id != 2:
 		return
 	var player: Node = player1 if player_id == 1 else player2
@@ -46,7 +49,12 @@ func apply_controller_frame(player_id: int, frame: ControllerFrame) -> void:
 
 
 func send_controller_frame(frame: ControllerFrame) -> void:
-	if not NetworkManager.is_online or NetworkManager.is_host:
+	if (
+		not is_inside_tree()
+		or not NetworkManager.is_online
+		or NetworkManager.is_host
+		or int(match_state.get("phase")) == FINISHED_PHASE
+	):
 		return
 	submit_controller_state.rpc_id(1, frame.move_x, frame.aim.x)
 	if frame.swing_id >= 0:
@@ -55,7 +63,9 @@ func send_controller_frame(frame: ControllerFrame) -> void:
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")
 func submit_controller_state(move_x: float, aim_x: float) -> void:
-	if not NetworkManager.is_host:
+	if not is_inside_tree() or multiplayer == null or not NetworkManager.is_host:
+		return
+	if int(match_state.get("phase")) == FINISHED_PHASE:
 		return
 	var sender_id := multiplayer.get_remote_sender_id()
 	if SessionManager.player_id_for_peer(sender_id) != 2:
@@ -78,7 +88,9 @@ func submit_controller_state(move_x: float, aim_x: float) -> void:
 
 @rpc("any_peer", "call_remote", "reliable")
 func submit_swing_event(swing_id: int, strength: float, aim_x: float) -> void:
-	if not NetworkManager.is_host:
+	if not is_inside_tree() or multiplayer == null or not NetworkManager.is_host:
+		return
+	if int(match_state.get("phase")) == FINISHED_PHASE:
 		return
 	var sender_id := multiplayer.get_remote_sender_id()
 	if SessionManager.player_id_for_peer(sender_id) != 2:
