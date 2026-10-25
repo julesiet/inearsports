@@ -72,6 +72,10 @@ func award_point(winner_id: int, reason: String = "fault") -> void:
 	if not bool(score_manager.call("record_point", winner_id, event_id, reason)):
 		print("Point event rejected: ", event_id)
 		return
+	if NetworkManager.is_online and NetworkManager.is_host:
+		get_parent().get_node("MatchNetworkSync").call(
+			"broadcast_point_awarded", winner_id, reason
+		)
 
 	# ScoreManager transitions to FINISHED when the target is reached.
 	if int(match_state.get("phase")) != POINT_AWARDED:

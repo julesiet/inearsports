@@ -4,6 +4,8 @@ extends Node3D
 # WAITING=0, SERVING=1, RALLY=2, POINT_AWARDED=3, FINISHED=4.
 const RALLY_PHASE := 2
 const SERVING_PHASE := 1
+const POINT_AWARDED_PHASE := 3
+const FINISHED_PHASE := 4
 const RESULTS_SCENE := "res://scenes/ui/results_screen.tscn"
 const RESULTS_SCREEN_DELAY_SECONDS := 3.0
 
@@ -34,6 +36,7 @@ func _ready() -> void:
 	contact1.set("player_id", 1)
 	contact2.set("player_id", 2)
 	score_manager.match_ended.connect(_on_match_ended)
+	match_state.phase_changed.connect(_on_match_phase_changed)
 
 
 func _on_match_ended(winner_id: int) -> void:
@@ -50,10 +53,25 @@ func _open_results_screen(winner_id: int) -> void:
 		"player1_score": int(score_manager.get("player1_points")),
 		"player2_score": int(score_manager.get("player2_points")),
 	})
-	var error := get_tree().change_scene_to_file(RESULTS_SCENE)
+	var error := SceneTransitionManager.change_scene_to_file(RESULTS_SCENE)
 	if error != OK:
 		get_tree().remove_meta("last_match_result")
 		push_error("Could not open results screen: %s" % RESULTS_SCENE)
+
+
+func _on_match_phase_changed(phase: int) -> void:
+	var player1: TennisPlayer = $Players/Player1
+	var player2: TennisPlayer = $Players/Player2
+	if phase == RALLY_PHASE:
+		player1.set_movement_locked(false)
+		player2.set_movement_locked(false)
+		return
+	if phase not in [SERVING_PHASE, POINT_AWARDED_PHASE, FINISHED_PHASE]:
+		return
+
+	var behind_baseline := rules.court_half_length + 1.0
+	player1.set_movement_locked(true, Vector3(0.0, player1.global_position.y, behind_baseline))
+	player2.set_movement_locked(true, Vector3(0.0, player2.global_position.y, -behind_baseline))
 
 func _physics_process(_delta: float) -> void:
 	_update_receiver_follow()
@@ -105,9 +123,14 @@ func _update_receiver_follow() -> void:
 			ball_velocity
 		)
 		var racket_offset := contact.global_position - player.global_position
-		player.set_ball_follow_target(
-			ball_intercept - Vector3(racket_offset.x, 0.0, racket_offset.z)
+		var follow_target := ball_intercept - Vector3(racket_offset.x, 0.0, racket_offset.z)
+		var is_backpedaling: bool = (
+			(player_id == 1 and follow_target.z > player.global_position.z)
+			or (player_id == 2 and follow_target.z < player.global_position.z)
 		)
+		var bounced_once := int(court_rules.call("get_receiver_bounces")) == 1
+		var speed_multiplier := 1.35 if bounced_once and is_backpedaling else 1.0
+		player.set_ball_follow_target(follow_target, speed_multiplier)
 
 
 func _predict_next_racket_height_crossing(
@@ -116,6 +139,7 @@ func _predict_next_racket_height_crossing(
 ) -> Vector3:
 	var position := ball.global_position
 	var gravity := float(ball.get("gravity"))
+	var curve_acceleration := float(ball.get("curve_acceleration"))
 	var ground_y := float(ball.get("ground_y")) + float(ball.get("ball_radius"))
 	if gravity <= 0.0:
 		return position
@@ -153,18 +177,23 @@ func _predict_next_racket_height_crossing(
 			) / gravity
 		else:
 			return position + Vector3(
-				ball_velocity.x * time_to_ground,
+				ball_velocity.x * time_to_ground
+					+ 0.5 * curve_acceleration * time_to_ground * time_to_ground,
 				ground_y - position.y,
 				ball_velocity.z * time_to_ground
 			)
 
 	return Vector3(
-		position.x + ball_velocity.x * intercept_time,
+		position.x + ball_velocity.x * intercept_time
+			+ 0.5 * curve_acceleration * intercept_time * intercept_time,
 		target_y,
 		position.z + ball_velocity.z * intercept_time
 	)
 
 func apply_confirmed_shot(player_id: int, racket: Node) -> void:
+	$MatchSystems/MatchNetworkSync.call(
+		"announce_ball_contact", int(match_state.get("phase")) == SERVING_PHASE
+	)
 	var aim: Vector2 = racket.get("active_aim")
 	var strength: float = float(racket.get("active_swing_strength"))
 	var swing_direction: Vector3 = racket.get("active_swing_direction")

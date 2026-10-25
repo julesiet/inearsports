@@ -72,12 +72,12 @@ func _update_controls() -> void:
 
 func _on_continue_pressed() -> void:
 	ControllerManager.reset_pending_input()
-	var error := get_tree().change_scene_to_file(LOBBY_SCENE)
+	var error := SceneTransitionManager.change_scene_to_file(LOBBY_SCENE)
 	if error != OK:
 		connection_status.text = "COULD NOT OPEN THE LOBBY. CHECK THE OUTPUT PANEL."
 
 
 func _on_back_pressed() -> void:
-	var error := get_tree().change_scene_to_file(MAIN_MENU_SCENE)
+	var error := SceneTransitionManager.change_scene_to_file(MAIN_MENU_SCENE)
 	if error != OK:
 		push_error("Could not return to the main menu.")

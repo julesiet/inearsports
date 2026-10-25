@@ -19,7 +19,10 @@ config/icon="res://icon.svg"
 
 ControllerManager="*res://scripts/autoload/controller_manager.gd"
 NetworkManager="*res://scripts/autoload/network_manager.gd"
+SceneTransitionManager="*res://scripts/autoload/scene_transition_manager.gd"
 SessionManager="*res://scripts/autoload/session_manager.gd"
+MusicManager="*res://scripts/autoload/music_manager.gd"
+ButtonHoverManager="*res://scripts/autoload/button_hover_manager.gd"
 
 [display]
 

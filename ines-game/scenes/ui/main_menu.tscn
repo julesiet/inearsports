@@ -1,62 +1,44 @@
-[gd_scene format=3 uid="uid://djmv27tf6sylk"]
+[gd_scene load_steps=10 format=3 uid="uid://djmv27tf6sylk"]
 
 [ext_resource type="Script" uid="uid://cr6s4sy5dbkce" path="res://scripts/ui/main_menu.gd" id="1_menu"]
+[ext_resource type="Shader" path="res://shaders/main_menu_checkered.gdshader" id="2_checkered"]
+[ext_resource type="FontFile" path="res://fonts/Handjet/static/Handjet-Medium.ttf" id="3_handjet_medium"]
+[ext_resource type="FontFile" path="res://fonts/Handjet/static/Handjet-ExtraBold.ttf" id="4_handjet_bold"]
 
-[sub_resource type="Gradient" id="Gradient_bg"]
-colors = PackedColorArray(0.027451, 0.086275, 0.129412, 1, 0.043137, 0.172549, 0.2, 1)
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_checkered"]
+shader = ExtResource("2_checkered")
+shader_parameter/reveal = 0.0
 
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_bg"]
-gradient = SubResource("Gradient_bg")
-fill_from = Vector2(0.05, 0)
-fill_to = Vector2(0.95, 1)
+[sub_resource type="FontVariation" id="FontVariation_title_italic"]
+base_font = ExtResource("4_handjet_bold")
+variation_transform = Transform2D(1, 0, -0.22, 1, 0, 0)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary"]
-content_margin_left = 24.0
-content_margin_top = 14.0
-content_margin_right = 24.0
-content_margin_bottom = 14.0
-bg_color = Color(0.54, 0.94, 0.38, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
+bg_color = Color(0.02, 0.57, 0.75, 0.78)
 border_width_bottom = 2
-border_color = Color(0.71, 1, 0.54, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(0.78, 0.96, 1, 0.82)
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
-content_margin_left = 24.0
-content_margin_top = 14.0
-content_margin_right = 24.0
-content_margin_bottom = 14.0
-bg_color = Color(0.055, 0.15, 0.19, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
+bg_color = Color(0.02, 0.58, 0.75, 0.62)
 border_width_bottom = 2
-border_color = Color(0.23, 0.48, 0.48, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(0.87, 0.96, 0.98, 0.78)
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
-content_margin_left = 24.0
-content_margin_top = 14.0
-content_margin_right = 24.0
-content_margin_bottom = 14.0
-bg_color = Color(0.09, 0.23, 0.25, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
+bg_color = Color(0.02, 0.61, 0.79, 0.84)
 border_width_bottom = 2
-border_color = Color(0.54, 0.94, 0.38, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
+border_color = Color(0.94, 0.99, 1, 0.9)
+content_margin_left = 18.0
+content_margin_top = 10.0
+content_margin_right = 18.0
+content_margin_bottom = 10.0
 
 [node name="MainMenu" type="Control" unique_id=162699483]
 layout_mode = 3
@@ -67,7 +49,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_menu")
 
-[node name="Background" type="TextureRect" parent="." unique_id=1189506568]
+[node name="Background" type="ColorRect" parent="." unique_id=1189506568]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -75,76 +57,115 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-texture = SubResource("GradientTexture2D_bg")
-expand_mode = 1
+material = SubResource("ShaderMaterial_checkered")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1553023819]
 layout_mode = 1
 anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_right = 0.0
+anchor_bottom = 0.86
+offset_left = 48.0
+offset_right = 628.0
 grow_horizontal = 2
 grow_vertical = 2
 
 [node name="MenuContent" type="VBoxContainer" parent="CenterContainer" unique_id=1852189125]
-custom_minimum_size = Vector2(390, 0)
+custom_minimum_size = Vector2(580, 0)
 layout_mode = 2
 theme_override_constants/separation = 14
 
 [node name="TitleLabel" type="Label" parent="CenterContainer/MenuContent" unique_id=1285118343]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 54
-text = "AIRPOD
-TENNIS"
-horizontal_alignment = 1
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.59, 0.78, 1)
+theme_override_constants/outline_size = 7
+theme_override_fonts/font = SubResource("FontVariation_title_italic")
+theme_override_font_sizes/font_size = 120
+text = "iNearSports"
+horizontal_alignment = 0
 
-[node name="PlayButton" type="Button" parent="CenterContainer/MenuContent" unique_id=857434179]
-custom_minimum_size = Vector2(300, 58)
+[node name="ButtonIndent" type="HBoxContainer" parent="CenterContainer/MenuContent"]
 layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="IndentSpacer" type="Control" parent="CenterContainer/MenuContent/ButtonIndent"]
+custom_minimum_size = Vector2(32, 0)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="ButtonsStack" type="VBoxContainer" parent="CenterContainer/MenuContent/ButtonIndent"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="PlayButton" type="Button" parent="CenterContainer/MenuContent/ButtonIndent/ButtonsStack" unique_id=857434179]
+custom_minimum_size = Vector2(360, 70)
+layout_mode = 2
+size_flags_horizontal = 0
 focus_neighbor_bottom = NodePath("../ControllerButton")
-theme_override_colors/font_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_pressed_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_hover_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 28
 theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
 theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
 text = "PLAY MATCH"
 
-[node name="ControllerButton" type="Button" parent="CenterContainer/MenuContent" unique_id=1888143559]
-custom_minimum_size = Vector2(300, 54)
+[node name="ControllerButton" type="Button" parent="CenterContainer/MenuContent/ButtonIndent/ButtonsStack" unique_id=1888143559]
+custom_minimum_size = Vector2(360, 64)
 layout_mode = 2
+size_flags_horizontal = 0
 focus_neighbor_top = NodePath("../PlayButton")
 focus_neighbor_bottom = NodePath("../DebugButton")
-theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "CONTROLLER SETUP"
 
-[node name="DebugButton" type="Button" parent="CenterContainer/MenuContent"]
-custom_minimum_size = Vector2(300, 54)
+[node name="DebugButton" type="Button" parent="CenterContainer/MenuContent/ButtonIndent/ButtonsStack"]
+custom_minimum_size = Vector2(360, 64)
 layout_mode = 2
+size_flags_horizontal = 0
 focus_neighbor_top = NodePath("../ControllerButton")
-focus_neighbor_bottom = NodePath("../QuitButton")
-theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 15
+focus_neighbor_bottom = NodePath("../CreditsButton")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 23
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "HUD DEBUG (G = POINT)"
 
-[node name="QuitButton" type="Button" parent="CenterContainer/MenuContent" unique_id=531234604]
-custom_minimum_size = Vector2(300, 54)
+[node name="CreditsButton" type="Button" parent="CenterContainer/MenuContent/ButtonIndent/ButtonsStack"]
+custom_minimum_size = Vector2(360, 64)
 layout_mode = 2
+size_flags_horizontal = 0
 focus_neighbor_top = NodePath("../DebugButton")
-theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 16
+focus_neighbor_bottom = NodePath("../QuitButton")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "CREDITS"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/MenuContent/ButtonIndent/ButtonsStack" unique_id=531234604]
+custom_minimum_size = Vector2(360, 64)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_neighbor_top = NodePath("../CreditsButton")
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")

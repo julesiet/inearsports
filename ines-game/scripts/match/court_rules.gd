@@ -21,6 +21,10 @@ func reset_bounces() -> void:
 	_receiver_bounces = 0
 
 
+func get_receiver_bounces() -> int:
+	return _receiver_bounces
+
+
 func _on_net_hit(at_position: Vector3) -> void:
 	if int(match_state.get("phase")) != RALLY_PHASE:
 		return

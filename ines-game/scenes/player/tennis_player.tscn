@@ -6,9 +6,23 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_u8nn2"]
 size = Vector3(0.5, 1.5, 1)
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_u8nn2"]
-radius = 0.25
-height = 1.5
+[sub_resource type="Gradient" id="Gradient_player_shadow"]
+colors = PackedColorArray(0.025, 0.035, 0.05, 0.32, 0.025, 0.035, 0.05, 0.0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_player_shadow"]
+gradient = SubResource("Gradient_player_shadow")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_player_shadow"]
+albedo_texture = SubResource("GradientTexture2D_player_shadow")
+transparency = 1
+shading_mode = 2
+
+[sub_resource type="QuadMesh" id="QuadMesh_player_shadow"]
+material = SubResource("StandardMaterial3D_player_shadow")
+size = Vector2(1.2, 0.9)
 
 [node name="TennisPlayer" type="CharacterBody3D" unique_id=1357167432]
 script = ExtResource("1_ka5fa")
@@ -18,8 +32,16 @@ shape = SubResource("BoxShape3D_u8nn2")
 
 [node name="VisualRoot" type="Node3D" parent="." unique_id=635863078]
 
-[node name="PlayerMesh" type="MeshInstance3D" parent="VisualRoot" unique_id=843364046]
-mesh = SubResource("CapsuleMesh_u8nn2")
+[node name="PlayerShadow" type="MeshInstance3D" parent="VisualRoot"]
+position = Vector3(0, -0.895, 0)
+rotation = Vector3(-1.5708, 0, 0)
+cast_shadow = 0
+mesh = SubResource("QuadMesh_player_shadow")
+
+[node name="PlayerMesh" type="Node3D" parent="VisualRoot" unique_id=843364046]
+
+[node name="ModelRoot" type="Node3D" parent="VisualRoot/PlayerMesh"]
+position = Vector3(0, -0.75, 0)
 
 [node name="RacketAnchor" type="Node3D" parent="VisualRoot" unique_id=456657037]
 

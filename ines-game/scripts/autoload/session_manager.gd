@@ -88,7 +88,7 @@ func start_match() -> void:
 
 func request_rematch() -> void:
 	if not NetworkManager.is_online:
-		var error := get_tree().change_scene_to_file(MATCH_SCENE)
+		var error := SceneTransitionManager.change_scene_to_file(MATCH_SCENE)
 		if error != OK:
 			match_start_failed.emit("Could not reopen the match scene.")
 		return
@@ -235,7 +235,7 @@ func _apply_lobby_state(ready1: bool, ready2: bool, connected2: bool) -> void:
 
 
 func _change_to_match() -> void:
-	var error := get_tree().change_scene_to_file(MATCH_SCENE)
+	var error := SceneTransitionManager.change_scene_to_file(MATCH_SCENE)
 	if error != OK:
 		match_started = false
 		match_start_failed.emit("Could not open the match scene.")
@@ -243,6 +243,6 @@ func _change_to_match() -> void:
 
 func _change_to_lobby() -> void:
 	match_started = false
-	var error := get_tree().change_scene_to_file("res://scenes/ui/lobby.tscn")
+	var error := SceneTransitionManager.change_scene_to_file("res://scenes/ui/lobby.tscn")
 	if error != OK:
 		match_start_failed.emit("Could not open the lobby scene.")

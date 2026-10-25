@@ -1,6 +1,8 @@
 class_name RacketController
 extends Node3D
 
+signal swing_window_finished(swing_id: int, is_backhand: bool)
+
 enum SwingState {
 	READY,
 	WINDUP,
@@ -22,6 +24,7 @@ var active_swing_id: int = -1
 
 var active_swing_strength: float = 1.0
 var active_aim: Vector2 = Vector2.ZERO
+var active_swing_is_backhand := false
 var controller_offset := Vector3.ZERO
 var active_swing_direction := Vector3.ZERO
 var _last_controller_motion := Vector3.ZERO
@@ -50,6 +53,9 @@ func request_swing(
 		if _last_controller_motion.length_squared() > 0.0001
 		else controller_offset.normalized()
 	)
+	active_swing_is_backhand = active_swing_direction.x < -0.1
+	if absf(active_swing_direction.x) <= 0.1:
+		active_swing_is_backhand = active_aim.x < -0.2
 	_run_swing()
 	
 
@@ -79,6 +85,7 @@ func _run_swing() -> void:
 	await get_tree().create_timer(active_window_s).timeout
 	hit_area.monitoring = false
 	_set_state(SwingState.RECOVERY)
+	swing_window_finished.emit(active_swing_id, active_swing_is_backhand)
 
 	# swing_forehand must be non-looping and end at its neutral pose.
 	await animation_player.animation_finished

@@ -1,5 +1,22 @@
 extends Node
 
+const BALL_CONTACT_SOUND: AudioStreamMP3 = preload("res://assets/audio/Serving1.mp3")
+const RACKET_HIT_SOUNDS: Array[AudioStreamMP3] = [
+	preload("res://assets/audio/RacketHit1.mp3"),
+	preload("res://assets/audio/RacketHit2.mp3"),
+	preload("res://assets/audio/RacketHit3.mp3"),
+	preload("res://assets/audio/RacketHit4.mp3"),
+]
+const BALL_GROUND_SOUNDS: Array[AudioStreamMP3] = [
+	preload("res://assets/audio/BallGround1.mp3"),
+	preload("res://assets/audio/BallGround2.mp3"),
+	preload("res://assets/audio/BallGround3.mp3"),
+]
+const RACKET_SWING_SOUNDS: Array[AudioStreamMP3] = [
+	preload("res://assets/audio/RacketSwing1.mp3"),
+	preload("res://assets/audio/RacketSwing2.mp3"),
+]
+const BACKHAND_SWING_SOUND: AudioStreamMP3 = preload("res://assets/audio/BackhandSwing.mp3")
 const SNAPSHOT_INTERVAL := 1.0 / 20.0
 const FINISHED_PHASE := 4
 
@@ -17,11 +34,127 @@ var _remote_state_sequence := 0
 var _last_remote_swing_id := -1
 var _last_client_swing_id := -1
 var _last_received_swing_ids := {1: -1, 2: -1}
+var _ball_contact_player: AudioStreamPlayer
+var _ball_ground_player: AudioStreamPlayer
+var _racket_swing_player: AudioStreamPlayer
+var _audio_rng := RandomNumberGenerator.new()
+var _next_swing_sound_index := 0
+var _confirmed_swing_ids: Dictionary = {}
 
 
 func _ready() -> void:
+	_ball_contact_player = AudioStreamPlayer.new()
+	_ball_contact_player.name = "BallContactAudioPlayer"
+	_ball_contact_player.stream = BALL_CONTACT_SOUND
+	add_child(_ball_contact_player)
+	_ball_ground_player = AudioStreamPlayer.new()
+	_ball_ground_player.name = "BallGroundAudioPlayer"
+	add_child(_ball_ground_player)
+	_racket_swing_player = AudioStreamPlayer.new()
+	_racket_swing_player.name = "RacketSwingAudioPlayer"
+	add_child(_racket_swing_player)
+	_audio_rng.randomize()
+	ball.connect("ground_bounced", _on_ball_ground_bounced)
+	racket1.connect("swing_window_finished", _on_swing_window_finished.bind(1))
+	racket2.connect("swing_window_finished", _on_swing_window_finished.bind(2))
+	match_root.get_node("Players/Player1/VisualRoot/RacketAnchor/Racket/AimPivot/SwingPivot/HitArea") \
+		.connect("hit_confirmed", _on_racket_hit_confirmed)
+	match_root.get_node("Players/Player2/VisualRoot/RacketAnchor/Racket/AimPivot/SwingPivot/HitArea") \
+		.connect("hit_confirmed", _on_racket_hit_confirmed)
 	if NetworkManager.is_online and not NetworkManager.is_host:
 		ball.set_physics_process(false)
+
+
+func announce_ball_contact(is_serve: bool) -> void:
+	var sound_index := -1
+	if not is_serve:
+		sound_index = _audio_rng.randi_range(0, RACKET_HIT_SOUNDS.size() - 1)
+	if NetworkManager.is_online and NetworkManager.is_host:
+		broadcast_ball_contact_sound.rpc(is_serve, sound_index)
+	else:
+		_play_ball_contact_sound(is_serve, sound_index)
+
+
+func broadcast_point_awarded(winner_id: int, reason: String) -> void:
+	if NetworkManager.is_online and NetworkManager.is_host:
+		receive_point_awarded.rpc(winner_id, reason)
+
+
+@rpc("authority", "call_remote", "reliable")
+func receive_point_awarded(winner_id: int, reason: String) -> void:
+	score_manager.point_awarded.emit(winner_id, reason)
+
+
+@rpc("authority", "call_local", "reliable")
+func broadcast_ball_contact_sound(is_serve: bool, sound_index: int) -> void:
+	_play_ball_contact_sound(is_serve, sound_index)
+
+
+func _play_ball_contact_sound(is_serve: bool, sound_index: int) -> void:
+	if is_serve:
+		_ball_contact_player.stream = BALL_CONTACT_SOUND
+	else:
+		if sound_index < 0 or sound_index >= RACKET_HIT_SOUNDS.size():
+			return
+		_ball_contact_player.stream = RACKET_HIT_SOUNDS[sound_index]
+	_ball_contact_player.play()
+
+
+func _on_ball_ground_bounced(_at_position: Vector3) -> void:
+	var sound_index := _audio_rng.randi_range(0, BALL_GROUND_SOUNDS.size() - 1)
+	if NetworkManager.is_online and NetworkManager.is_host:
+		broadcast_ball_ground_sound.rpc(sound_index)
+	else:
+		_play_ball_ground_sound(sound_index)
+
+
+@rpc("authority", "call_local", "reliable")
+func broadcast_ball_ground_sound(sound_index: int) -> void:
+	_play_ball_ground_sound(sound_index)
+
+
+func _play_ball_ground_sound(sound_index: int) -> void:
+	if sound_index < 0 or sound_index >= BALL_GROUND_SOUNDS.size():
+		return
+	_ball_ground_player.stream = BALL_GROUND_SOUNDS[sound_index]
+	_ball_ground_player.play()
+
+
+func _on_racket_hit_confirmed(player_id: int, swing_id: int, _contact_position: Vector3) -> void:
+	_confirmed_swing_ids["%d:%d" % [player_id, swing_id]] = true
+
+
+func _on_swing_window_finished(swing_id: int, is_backhand: bool, player_id: int) -> void:
+	if NetworkManager.is_online and not NetworkManager.is_host:
+		return
+	var swing_key := "%d:%d" % [player_id, swing_id]
+	if _confirmed_swing_ids.has(swing_key):
+		_confirmed_swing_ids.erase(swing_key)
+		return
+
+	var sound_index := -1
+	if not is_backhand:
+		sound_index = _next_swing_sound_index
+		_next_swing_sound_index = (_next_swing_sound_index + 1) % RACKET_SWING_SOUNDS.size()
+	if NetworkManager.is_online and NetworkManager.is_host:
+		broadcast_racket_swing_sound.rpc(is_backhand, sound_index)
+	else:
+		_play_racket_swing_sound(is_backhand, sound_index)
+
+
+@rpc("authority", "call_local", "reliable")
+func broadcast_racket_swing_sound(is_backhand: bool, sound_index: int) -> void:
+	_play_racket_swing_sound(is_backhand, sound_index)
+
+
+func _play_racket_swing_sound(is_backhand: bool, sound_index: int) -> void:
+	if is_backhand:
+		_racket_swing_player.stream = BACKHAND_SWING_SOUND
+	else:
+		if sound_index < 0 or sound_index >= RACKET_SWING_SOUNDS.size():
+			return
+		_racket_swing_player.stream = RACKET_SWING_SOUNDS[sound_index]
+	_racket_swing_player.play()
 
 
 func _physics_process(delta: float) -> void:

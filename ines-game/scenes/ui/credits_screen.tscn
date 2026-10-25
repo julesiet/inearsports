@@ -1,0 +1,117 @@
+[gd_scene load_steps=9 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/credits_screen.gd" id="1_credits"]
+[ext_resource type="Shader" path="res://shaders/controller_setup_checkered.gdshader" id="2_background"]
+[ext_resource type="FontFile" path="res://fonts/Handjet/static/Handjet-Medium.ttf" id="3_handjet_medium"]
+[ext_resource type="FontFile" path="res://fonts/Handjet/static/Handjet-ExtraBold.ttf" id="4_handjet_bold"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
+shader = ExtResource("2_background")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_panel"]
+bg_color = Color(0.02, 0.37, 0.47, 0.82)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.04, 0.44, 0.56, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 28.0
+content_margin_top = 22.0
+content_margin_right = 28.0
+content_margin_bottom = 22.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary"]
+bg_color = Color(0.02, 0.57, 0.75, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 2
+border_color = Color(0.05, 0.49, 0.62, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+
+[node name="CreditsScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_credits")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+material = SubResource("ShaderMaterial_background")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CreditsContent" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(820, 0)
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/CreditsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.02, 0.48, 0.62, 1)
+theme_override_fonts/font = ExtResource("4_handjet_bold")
+theme_override_font_sizes/font_size = 88
+text = "Credits"
+horizontal_alignment = 1
+
+[node name="SubtitleLabel" type="Label" parent="CenterContainer/CreditsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.02, 0.48, 0.62, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 32
+text = "thank you to all those involved! <3"
+horizontal_alignment = 1
+
+[node name="CreditsPanel" type="PanelContainer" parent="CenterContainer/CreditsContent"]
+custom_minimum_size = Vector2(820, 250)
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_panel")
+
+[node name="CreditsText" type="RichTextLabel" parent="CenterContainer/CreditsContent/CreditsPanel"]
+custom_minimum_size = Vector2(760, 200)
+layout_mode = 2
+theme_override_colors/default_color = Color(1, 1, 1, 1)
+theme_override_fonts/normal_font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/normal_font_size = 30
+text = "- MAIN MUSIC: A. Sharp (on YouTube) - Taxi\n- BUTTON HOVER: iggchan (on YouTube) - Boop (Button Hover)\n- BUTTON SELECT: @ resoundxstudio (on YouTube) - Free Game SFX Pack | Hover & Select Sound Effects for Game Developers\n- SERVING: UH Music (on YouTube) - Tennis Serve Sound Effect\n- BALL GROUND HITTING: LT Sound Effects (on YouTube) - FREE SOUND EFFECTS: Tennis Ball Bouncing\n- RACKET HITS: @sounds_for_free (on YouTube) - Sound Effects - Tennis racket hits sfx.\n- RACKET SWINGS: @sounds_for_free (on YouTube) - Sound Effects - Racket SFX. Fast swing, whoosh SFX."
+scroll_active = true
+autowrap_mode = 2
+
+[node name="BackButton" type="Button" parent="CenterContainer/CreditsContent"]
+custom_minimum_size = Vector2(360, 60)
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
+text = "BACK TO MENU"

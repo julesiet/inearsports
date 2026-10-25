@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://daxjwac3p2v0j" path="res://scenes/player/racket_controller.gd" id="1_eevn8"]
 [ext_resource type="Script" uid="uid://5tfcnjy3t1ra" path="res://scripts/player/racket_contact.gd" id="2_3ffts"]
-[ext_resource type="Script" path="res://scenes/player/racket_visual.gd" id="3_racket_visual"]
+[ext_resource type="Script" uid="uid://bt78ptesnpplk" path="res://scenes/player/racket_visual.gd" id="3_racket_visual"]
 
 [sub_resource type="Animation" id="Animation_4i6dx"]
 length = 0.001

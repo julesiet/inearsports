@@ -86,6 +86,6 @@ func _on_return_to_lobby_pressed() -> void:
 
 func _on_return_home_pressed() -> void:
 	SessionManager.leave_session()
-	var error := get_tree().change_scene_to_file(MAIN_MENU_SCENE)
+	var error := SceneTransitionManager.change_scene_to_file(MAIN_MENU_SCENE)
 	if error != OK:
 		push_error("Could not return to the main menu.")

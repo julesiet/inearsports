@@ -1,54 +1,84 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene load_steps=11 format=3]
 
 [ext_resource type="Script" path="res://scripts/ui/lobby.gd" id="1_lobby"]
+[ext_resource type="Shader" path="res://shaders/controller_setup_checkered.gdshader" id="2_background"]
+[ext_resource type="FontFile" path="res://fonts/Handjet/static/Handjet-Medium.ttf" id="3_handjet_medium"]
+[ext_resource type="FontFile" path="res://fonts/Handjet/static/Handjet-ExtraBold.ttf" id="4_handjet_bold"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_background"]
+shader = ExtResource("2_background")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary"]
-bg_color = Color(0.54, 0.94, 0.38, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
+bg_color = Color(0.02, 0.57, 0.75, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
 border_width_bottom = 2
-border_color = Color(0.71, 1, 0.54, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-content_margin_left = 24.0
-content_margin_top = 14.0
-content_margin_right = 24.0
-content_margin_bottom = 14.0
+border_color = Color(0.05, 0.49, 0.62, 0.95)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
-bg_color = Color(0.055, 0.15, 0.19, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.23, 0.48, 0.48, 1)
+bg_color = Color(0.02, 0.37, 0.47, 0.8)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.04, 0.44, 0.56, 0.95)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-content_margin_left = 24.0
-content_margin_top = 14.0
-content_margin_right = 24.0
-content_margin_bottom = 14.0
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
-bg_color = Color(0.09, 0.23, 0.25, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.54, 0.94, 0.38, 1)
+bg_color = Color(0.03, 0.61, 0.76, 0.9)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.05, 0.49, 0.62, 1)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-content_margin_left = 24.0
-content_margin_top = 14.0
-content_margin_right = 24.0
-content_margin_bottom = 14.0
+content_margin_left = 20.0
+content_margin_top = 12.0
+content_margin_right = 20.0
+content_margin_bottom = 12.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_input"]
+bg_color = Color(0.08, 0.29, 0.34, 0.72)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.82, 0.96, 0.94, 0.9)
+corner_radius_top_left = 6
+corner_radius_top_right = 6
+corner_radius_bottom_right = 6
+corner_radius_bottom_left = 6
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_disabled"]
+bg_color = Color(0.39, 0.54, 0.53, 0.7)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(0.55, 0.67, 0.65, 0.8)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [node name="Lobby" type="Control"]
 layout_mode = 3
@@ -58,6 +88,16 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lobby")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+material = SubResource("ShaderMaterial_background")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -72,29 +112,35 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="LobbyContent" type="VBoxContainer" parent="MarginContainer"]
-custom_minimum_size = Vector2(580, 0)
+custom_minimum_size = Vector2(900, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 12
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 22
 
 [node name="TitleLabel" type="Label" parent="MarginContainer/LobbyContent"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color = Color(0.02, 0.48, 0.62, 1)
+theme_override_fonts/font = ExtResource("4_handjet_bold")
+theme_override_font_sizes/font_size = 56
 text = "LAN LOBBY"
 horizontal_alignment = 1
 
 [node name="HostButton" type="Button" parent="MarginContainer/LobbyContent"]
-custom_minimum_size = Vector2(0, 54)
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_hover_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_pressed_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_font_sizes/font_size = 17
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.82, 0.88, 0.86, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 26
 theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
 theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_disabled")
 text = "HOST A MATCH"
 
 [node name="JoinRow" type="HBoxContainer" parent="MarginContainer/LobbyContent"]
@@ -102,67 +148,87 @@ layout_mode = 2
 theme_override_constants/separation = 10
 
 [node name="IPAddressInput" type="LineEdit" parent="MarginContainer/LobbyContent/JoinRow"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_placeholder_color = Color(0.82, 0.92, 0.9, 0.8)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_input")
+theme_override_styles/focus = SubResource("StyleBoxFlat_input")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_input")
 placeholder_text = "Host Mac LAN IP (for example 192.168.1.10)"
 clear_button_enabled = true
 
 [node name="JoinButton" type="Button" parent="MarginContainer/LobbyContent/JoinRow"]
-custom_minimum_size = Vector2(150, 50)
+custom_minimum_size = Vector2(150, 54)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.82, 0.88, 0.86, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_disabled")
 text = "JOIN"
 
 [node name="ConnectionStatus" type="Label" parent="MarginContainer/LobbyContent"]
 custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.54, 0.94, 0.38, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_colors/font_color = Color(0.35, 0.98, 0.43, 1)
+theme_override_colors/font_outline_color = Color(0.02, 0.34, 0.43, 1)
+theme_override_constants/outline_size = 3
+theme_override_fonts/font = ExtResource("4_handjet_bold")
+theme_override_font_sizes/font_size = 22
 text = "OFFLINE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="PlayerList" type="VBoxContainer" parent="MarginContainer/LobbyContent"]
-custom_minimum_size = Vector2(0, 76)
+custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="ReadyButton" type="Button" parent="MarginContainer/LobbyContent"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.82, 0.88, 0.86, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_disabled")
 text = "NOT READY — CLICK TO READY"
 
 [node name="StartMatchButton" type="Button" parent="MarginContainer/LobbyContent"]
-custom_minimum_size = Vector2(0, 58)
+custom_minimum_size = Vector2(0, 60)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_hover_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_pressed_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_font_sizes/font_size = 18
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.82, 0.88, 0.86, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 26
 theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
 theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_disabled")
 text = "START MATCH"
 visible = false
 
 [node name="BackButton" type="Button" parent="MarginContainer/LobbyContent"]
-custom_minimum_size = Vector2(0, 48)
+custom_minimum_size = Vector2(0, 52)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 24
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")

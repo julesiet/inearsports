@@ -63,7 +63,7 @@ func _on_start_match_pressed() -> void:
 
 func _on_back_pressed() -> void:
 	SessionManager.leave_session()
-	var error := get_tree().change_scene_to_file(MAIN_MENU_SCENE)
+	var error := SceneTransitionManager.change_scene_to_file(MAIN_MENU_SCENE)
 	if error != OK:
 		push_error("Could not return to the main menu.")
 
@@ -117,8 +117,8 @@ func _add_player_row(player_id: int, role: String, connected: bool, is_ready: bo
 	var row := Label.new()
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	row.add_theme_font_size_override("font_size", 16)
-	row.add_theme_color_override("font_color", Color(0.88, 0.94, 0.91))
+	row.add_theme_font_size_override("font_size", 22)
+	row.add_theme_color_override("font_color", Color(1.0, 1.0, 1.0))
 	var local_marker := " · YOU" if SessionManager.local_player_id == player_id else ""
 	var connection_label := "CONNECTED" if connected else "WAITING FOR CONNECTION"
 	var ready_label := "READY" if is_ready else "NOT READY"
