@@ -12,6 +12,26 @@ var _last_player1_points := 0
 var _last_player2_points := 0
 var _last_point_reason := ""
 
+func _style_badge(label: Label, accent: Color) -> void:
+	var badge := StyleBoxFlat.new()
+	badge.bg_color = Color(1.0, 1.0, 1.0, 0.9)
+	badge.border_color = accent
+	badge.set_border_width_all(3)
+	badge.set_corner_radius_all(14)
+	badge.content_margin_left = 14.0
+	badge.content_margin_right = 14.0
+	badge.content_margin_top = 6.0
+	badge.content_margin_bottom = 6.0
+
+	label.add_theme_stylebox_override("normal", badge)
+	label.add_theme_color_override("font_color", Color("#55717a"))
+
+
+func _style_sticker(label: Label, accent: Color) -> void:
+	label.add_theme_color_override("font_color", Color("#ffffff"))
+	label.add_theme_color_override("font_outline_color", accent)
+	label.add_theme_constant_override("outline_size", 2)
+
 
 func _ready() -> void:
 	var match_root := get_parent()
@@ -31,17 +51,19 @@ func _ready() -> void:
 	)
 	_on_phase_changed(int(match_state.get("phase")))
 
-	player1_score.add_theme_font_size_override("font_size", 24)
-	rally_status.add_theme_font_size_override("font_size", 18)
-	player2_score.add_theme_font_size_override("font_size", 24)
-	controller_status.add_theme_font_size_override("font_size", 14)
-	centered_message.add_theme_font_size_override("font_size", 28)
+	# player1_score.add_theme_font_size_override("font_size", 24)
+	# rally_status.add_theme_font_size_override("font_size", 18)
+	# player2_score.add_theme_font_size_override("font_size", 24)
+	# controller_status.add_theme_font_size_override("font_size", 14)
+	# centered_message.add_theme_font_size_override("font_size", 28)
 
-	for label in [player1_score, rally_status, player2_score, controller_status, centered_message]:
-		label.add_theme_color_override("font_color", Color(0.91, 0.95, 1.0))
+	# for label in [player1_score, rally_status, player2_score, controller_status, centered_message]:
+		# label.add_theme_color_override("font_color", Color(0.91, 0.95, 1.0))
 
-	centered_message.add_theme_color_override("font_color", Color(0.45, 0.95, 0.78))
-
+	_style_badge(player1_score, Color("#cdeac6"))
+	_style_badge(rally_status, Color("#87dbff"))
+	_style_badge(player2_score, Color("#ffb6bd"))
+	_style_sticker(centered_message, Color("#fdf581"))
 
 func _on_score_changed(player1_points: int, player2_points: int) -> void:
 	player1_score.text = "PLAYER 1   %d" % player1_points
