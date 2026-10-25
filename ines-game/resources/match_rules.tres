@@ -1,11 +1,6 @@
-[gd_resource type="Resource" script_class="MatchRules" load_steps=2 format=3]
+[gd_resource type="Resource" script_class="MatchRules" format=3 uid="uid://oyjxq43lq3a1"]
 
-[ext_resource type="Script" path="res://scripts/match/match_rules.gd" id="1"]
+[ext_resource type="Script" uid="uid://cykigapu8hvgr" path="res://scripts/match/match_rules.gd" id="1"]
 
 [resource]
 script = ExtResource("1")
-points_to_win = 5
-court_half_width = 4.5
-court_half_length = 13.5
-max_bounces = 1
-point_reset_delay_s = 1.0
