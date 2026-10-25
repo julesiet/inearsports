@@ -25,20 +25,20 @@ func _ready() -> void:
 
 
 func _on_play_pressed() -> void:
-	var error := get_tree().change_scene_to_file(LOBBY_SCENE)
+	var error := await SceneTransitionManager.change_scene_to_file(LOBBY_SCENE)
 	if error != OK:
 		_show_notice("Could not open the lobby. Check the Output panel for details.")
 
 
 func _on_controller_pressed() -> void:
-	var error := get_tree().change_scene_to_file(CONTROLLER_SETUP_SCENE)
+	var error := await SceneTransitionManager.change_scene_to_file(CONTROLLER_SETUP_SCENE)
 	if error != OK:
 		_show_notice("Could not open controller setup. Check the Output panel for details.")
 
 
 func _on_debug_pressed() -> void:
 	SessionManager.leave_session()
-	var error := get_tree().change_scene_to_file(MATCH_SCENE)
+	var error := await SceneTransitionManager.change_scene_to_file(MATCH_SCENE)
 	if error != OK:
 		_show_notice("Could not open the match debug scene. Check the Output panel for details.")
 

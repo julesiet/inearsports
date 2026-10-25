@@ -48,7 +48,7 @@ func _open_results_screen(winner_id: int) -> void:
 		"player1_score": int(score_manager.get("player1_points")),
 		"player2_score": int(score_manager.get("player2_points")),
 	})
-	var error := get_tree().change_scene_to_file(RESULTS_SCENE)
+	var error := await SceneTransitionManager.change_scene_to_file(RESULTS_SCENE)
 	if error != OK:
 		get_tree().remove_meta("last_match_result")
 		push_error("Could not open results screen: %s" % RESULTS_SCENE)

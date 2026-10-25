@@ -1,56 +1,58 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://bna51nci21yvl"]
 
-[ext_resource type="Script" path="res://scripts/ui/lobby.gd" id="1_lobby"]
+[ext_resource type="Script" uid="uid://da5deg5gp50n2" path="res://scripts/ui/lobby.gd" id="1_lobby"]
+[ext_resource type="FontFile" uid="uid://di2oy5tga7gdg" path="res://fonts/Handjet-SemiBold.ttf" id="2_efll3"]
+[ext_resource type="Texture2D" uid="uid://n628hkywtrrk" path="res://assets/ui/lobby_checkered_background.png" id="3_lobby_bg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary"]
-bg_color = Color(0.54, 0.94, 0.38, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.71, 1, 0.54, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 content_margin_left = 24.0
 content_margin_top = 14.0
 content_margin_right = 24.0
 content_margin_bottom = 14.0
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
-bg_color = Color(0.055, 0.15, 0.19, 1)
+bg_color = Color(0, 0.498039, 0.65098, 0.596078)
 border_width_left = 2
 border_width_top = 2
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.23, 0.48, 0.48, 1)
+border_color = Color(0, 0.498039, 0.65098, 0.596078)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
-content_margin_left = 24.0
-content_margin_top = 14.0
-content_margin_right = 24.0
-content_margin_bottom = 14.0
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
-bg_color = Color(0.09, 0.23, 0.25, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.54, 0.94, 0.38, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 content_margin_left = 24.0
 content_margin_top = 14.0
 content_margin_right = 24.0
 content_margin_bottom = 14.0
+bg_color = Color(0.086275, 0.560784, 0.701961, 0.596078)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.086275, 0.560784, 0.701961, 0.596078)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
-[node name="Lobby" type="Control"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+bg_color = Color(0, 0.498039, 0.65098, 0.596078)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.498039, 0.65098, 0.596078)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[node name="Lobby" type="Control" unique_id=1827117556]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,7 +61,20 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_lobby")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="Background" type="TextureRect" parent="." unique_id=721256188]
+z_index = -1
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+texture = ExtResource("3_lobby_bg")
+expand_mode = 1
+stretch_mode = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1022868945]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -71,99 +86,109 @@ offset_bottom = -32.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LobbyContent" type="VBoxContainer" parent="MarginContainer"]
+[node name="LobbyContent" type="VBoxContainer" parent="MarginContainer" unique_id=289432931]
 custom_minimum_size = Vector2(580, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="MarginContainer/LobbyContent"]
+[node name="TitleLabel" type="Label" parent="MarginContainer/LobbyContent" unique_id=952826575]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 34
+theme_override_colors/font_color = Color(0, 0.580392, 0.74902, 1)
+theme_override_fonts/font = ExtResource("2_efll3")
+theme_override_font_sizes/font_size = 40
 text = "LAN LOBBY"
 horizontal_alignment = 1
 
-[node name="HostButton" type="Button" parent="MarginContainer/LobbyContent"]
+[node name="HostButton" type="Button" parent="MarginContainer/LobbyContent" unique_id=62015760]
 custom_minimum_size = Vector2(0, 54)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_hover_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_pressed_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_font_sizes/font_size = 17
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_efll3")
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
-theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "HOST A MATCH"
 
-[node name="JoinRow" type="HBoxContainer" parent="MarginContainer/LobbyContent"]
+[node name="JoinRow" type="HBoxContainer" parent="MarginContainer/LobbyContent" unique_id=888158087]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="IPAddressInput" type="LineEdit" parent="MarginContainer/LobbyContent/JoinRow"]
+[node name="IPAddressInput" type="LineEdit" parent="MarginContainer/LobbyContent/JoinRow" unique_id=940749555]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_efll3")
+theme_override_font_sizes/font_size = 18
 placeholder_text = "Host Mac LAN IP (for example 192.168.1.10)"
 clear_button_enabled = true
 
-[node name="JoinButton" type="Button" parent="MarginContainer/LobbyContent/JoinRow"]
+[node name="JoinButton" type="Button" parent="MarginContainer/LobbyContent/JoinRow" unique_id=674975741]
 custom_minimum_size = Vector2(150, 50)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_efll3")
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
 text = "JOIN"
 
-[node name="ConnectionStatus" type="Label" parent="MarginContainer/LobbyContent"]
+[node name="ConnectionStatus" type="Label" parent="MarginContainer/LobbyContent" unique_id=333527451]
 custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 theme_override_colors/font_color = Color(0.54, 0.94, 0.38, 1)
-theme_override_font_sizes/font_size = 14
+theme_override_colors/font_outline_color = Color(0, 0.19, 0.25, 1)
+theme_override_constants/outline_size = 2
+theme_override_fonts/font = ExtResource("2_efll3")
+theme_override_font_sizes/font_size = 32
 text = "OFFLINE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="PlayerList" type="VBoxContainer" parent="MarginContainer/LobbyContent"]
+[node name="PlayerList" type="VBoxContainer" parent="MarginContainer/LobbyContent" unique_id=1669968564]
 custom_minimum_size = Vector2(0, 76)
 layout_mode = 2
 theme_override_constants/separation = 8
 
-[node name="ReadyButton" type="Button" parent="MarginContainer/LobbyContent"]
+[node name="ReadyButton" type="Button" parent="MarginContainer/LobbyContent" unique_id=411002836]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_efll3")
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
 text = "NOT READY — CLICK TO READY"
 
-[node name="StartMatchButton" type="Button" parent="MarginContainer/LobbyContent"]
+[node name="StartMatchButton" type="Button" parent="MarginContainer/LobbyContent" unique_id=63981991]
+visible = false
 custom_minimum_size = Vector2(0, 58)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_hover_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_pressed_color = Color(0.035, 0.11, 0.08, 1)
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
-theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "START MATCH"
-visible = false
 
-[node name="BackButton" type="Button" parent="MarginContainer/LobbyContent"]
+[node name="BackButton" type="Button" parent="MarginContainer/LobbyContent" unique_id=1294094093]
 custom_minimum_size = Vector2(0, 48)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
-theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 15
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_efll3")
+theme_override_font_sizes/font_size = 18
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
 text = "BACK TO MENU"

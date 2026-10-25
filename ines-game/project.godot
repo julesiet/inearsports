@@ -20,6 +20,7 @@ config/icon="res://icon.svg"
 ControllerManager="*res://scripts/autoload/controller_manager.gd"
 NetworkManager="*res://scripts/autoload/network_manager.gd"
 SessionManager="*res://scripts/autoload/session_manager.gd"
+SceneTransitionManager="*res://scripts/autoload/scene_transition_manager.gd"
 
 [display]
 

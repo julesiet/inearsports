@@ -125,7 +125,7 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "CONTROLLER SETUP"
 
-[node name="DebugButton" type="Button" parent="CenterContainer/MenuContent"]
+[node name="DebugButton" type="Button" parent="CenterContainer/MenuContent" unique_id=1597694152]
 custom_minimum_size = Vector2(300, 54)
 layout_mode = 2
 focus_neighbor_top = NodePath("../ControllerButton")

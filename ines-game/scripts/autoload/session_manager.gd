@@ -88,7 +88,7 @@ func start_match() -> void:
 
 func request_rematch() -> void:
 	if not NetworkManager.is_online:
-		var error := get_tree().change_scene_to_file(MATCH_SCENE)
+		var error := await SceneTransitionManager.change_scene_to_file(MATCH_SCENE)
 		if error != OK:
 			match_start_failed.emit("Could not reopen the match scene.")
 		return
@@ -102,7 +102,7 @@ func request_rematch() -> void:
 		_broadcast_lobby_state()
 	else:
 		request_rematch_ready.rpc_id(1)
-	_change_to_lobby()
+	await _change_to_lobby()
 
 
 func return_to_lobby() -> void:
@@ -113,7 +113,7 @@ func return_to_lobby() -> void:
 		_broadcast_lobby_state()
 	elif NetworkManager.is_online:
 		request_lobby_reset.rpc_id(1)
-	_change_to_lobby()
+	await _change_to_lobby()
 
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -176,12 +176,12 @@ func receive_lobby_state(ready1: bool, ready2: bool, connected2: bool) -> void:
 func start_match_for_peers() -> void:
 	if not NetworkManager.is_host and not multiplayer.is_server():
 		match_started = true
-		_change_to_match()
+		await _change_to_match()
 		return
 	if not can_start_match():
 		return
 	match_started = true
-	_change_to_match()
+	await _change_to_match()
 
 
 func _on_peer_connected(peer_id: int) -> void:
@@ -235,7 +235,7 @@ func _apply_lobby_state(ready1: bool, ready2: bool, connected2: bool) -> void:
 
 
 func _change_to_match() -> void:
-	var error := get_tree().change_scene_to_file(MATCH_SCENE)
+	var error := await SceneTransitionManager.change_scene_to_file(MATCH_SCENE)
 	if error != OK:
 		match_started = false
 		match_start_failed.emit("Could not open the match scene.")
@@ -243,6 +243,6 @@ func _change_to_match() -> void:
 
 func _change_to_lobby() -> void:
 	match_started = false
-	var error := get_tree().change_scene_to_file("res://scenes/ui/lobby.tscn")
+	var error := await SceneTransitionManager.change_scene_to_file("res://scenes/ui/lobby.tscn")
 	if error != OK:
 		match_start_failed.emit("Could not open the lobby scene.")

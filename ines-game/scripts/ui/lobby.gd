@@ -1,6 +1,11 @@
 extends Control
 
 const MAIN_MENU_SCENE := "res://scenes/ui/main_menu.tscn"
+const HANDJET_FONT: FontFile = preload("res://fonts/Handjet-SemiBold.ttf")
+const PLAYER_ROW_BG := Color("#00536dde")
+const PLAYER_ROW_BORDER := Color("#87dbff99")
+const PLAYER_ROW_TEXT := Color("#ffffff")
+const PLAYER_ROW_OUTLINE := Color("#003340")
 
 @onready var host_button: Button = $MarginContainer/LobbyContent/HostButton
 @onready var ip_address_input: LineEdit = $MarginContainer/LobbyContent/JoinRow/IPAddressInput
@@ -63,7 +68,7 @@ func _on_start_match_pressed() -> void:
 
 func _on_back_pressed() -> void:
 	SessionManager.leave_session()
-	var error := get_tree().change_scene_to_file(MAIN_MENU_SCENE)
+	var error := await SceneTransitionManager.change_scene_to_file(MAIN_MENU_SCENE)
 	if error != OK:
 		push_error("Could not return to the main menu.")
 
@@ -117,8 +122,21 @@ func _add_player_row(player_id: int, role: String, connected: bool, is_ready: bo
 	var row := Label.new()
 	row.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	row.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	row.add_theme_font_size_override("font_size", 16)
-	row.add_theme_color_override("font_color", Color(0.88, 0.94, 0.91))
+	row.add_theme_font_override("font", HANDJET_FONT)
+	row.add_theme_font_size_override("font_size", 20)
+	row.add_theme_color_override("font_color", PLAYER_ROW_TEXT)
+	row.add_theme_color_override("font_outline_color", PLAYER_ROW_OUTLINE)
+	row.add_theme_constant_override("outline_size", 2)
+	var row_style := StyleBoxFlat.new()
+	row_style.bg_color = PLAYER_ROW_BG
+	row_style.set_border_width_all(1)
+	row_style.border_color = PLAYER_ROW_BORDER
+	row_style.set_corner_radius_all(5)
+	row_style.content_margin_left = 8.0
+	row_style.content_margin_right = 8.0
+	row_style.content_margin_top = 3.0
+	row_style.content_margin_bottom = 3.0
+	row.add_theme_stylebox_override("normal", row_style)
 	var local_marker := " · YOU" if SessionManager.local_player_id == player_id else ""
 	var connection_label := "CONNECTED" if connected else "WAITING FOR CONNECTION"
 	var ready_label := "READY" if is_ready else "NOT READY"
