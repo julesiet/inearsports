@@ -2,9 +2,18 @@
 
 [ext_resource type="Script" uid="uid://bf4ugrlw850hx" path="res://scripts/input/keyboard_adapter.gd" id="1_5qb6a"]
 [ext_resource type="PackedScene" uid="uid://cqxw1w2kxsgqi" path="res://scenes/world/TennisCourt.tscn" id="1_c8ygb"]
+[ext_resource type="PackedScene" uid="uid://dlh36xampsqoc" path="res://scenes/ball/tennis_ball.tscn" id="1_huivl"]
+[ext_resource type="Script" uid="uid://qdgfrw54crwu" path="res://scripts/match/tennis_match.gd" id="1_q5wlf"]
 [ext_resource type="PackedScene" uid="uid://bj28oxegdgy4g" path="res://scenes/camera/tennis_camera.tscn" id="2_5qb6a"]
 [ext_resource type="PackedScene" uid="uid://bxdqxp35pvo2x" path="res://scenes/player/tennis_player.tscn" id="2_hvvs3"]
 [ext_resource type="Script" uid="uid://7hijpbfhr2wd" path="res://scenes/world/keyboard_test_driver.gd" id="4_hvvs3"]
+[ext_resource type="Script" uid="uid://bpu3iwta6qq7b" path="res://scripts/match/match_state.gd" id="5_a5woy"]
+[ext_resource type="Script" uid="uid://dg2hakcgvmvia" path="res://scripts/match/serve_manager.gd" id="6_vjsnx"]
+[ext_resource type="Script" uid="uid://306y6hl3uer4" path="res://scripts/match/court_rules.gd" id="8_court_rules"]
+[ext_resource type="Script" uid="uid://bb7dpxtewjx3g" path="res://scripts/match/score_manager.gd" id="9_score_manager"]
+[ext_resource type="Script" uid="uid://bvlp3101x8qg6" path="res://scripts/match/serve_test_driver.gd" id="10_7ay66"]
+[ext_resource type="Resource" path="res://resources/match_rules.tres" id="11_match_rules"]
+[ext_resource type="PackedScene" uid="uid://dorafsbbuftbp" path="res://scenes/ui/match_hud.tscn" id="12_match_hud"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7t325"]
 albedo_color = Color(0, 0.083333254, 1, 1)
@@ -14,33 +23,108 @@ material = SubResource("StandardMaterial3D_7t325")
 radius = 0.2
 height = 0.45
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4i6dx"]
+albedo_color = Color(0.28, 0.28, 0.28, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_u8nn2"]
+material = SubResource("StandardMaterial3D_4i6dx")
+top_radius = 0.1
+bottom_radius = 0.06679688
+height = 0.25
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_u8nn2"]
+margin = 0.0
+radius = 0.2
+
+[sub_resource type="Animation" id="Animation_4i6dx"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AimPivot/SwingPivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.13439035, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_eevn8"]
+resource_name = "swing_forehand"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AimPivot/SwingPivot:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.16, 0.2, 0.22, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0.13439035, 0, 0), Vector3(0.2687807, -0.27052602, -0.13439035), Vector3(0.13439035, 0.2443461, -0.13439035), Vector3(0.13439035, 0.4886922, -0.13439035), Vector3(0.13439035, 0.7330383, 0), Vector3(0.13439035, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_3ffts"]
+_data = {
+&"RESET": SubResource("Animation_4i6dx"),
+&"swing_forehand": SubResource("Animation_eevn8")
+}
+
 [node name="TennisMatch" type="Node3D" unique_id=828309337]
+script = ExtResource("1_q5wlf")
+current_hitter_id = 1
+rules = ExtResource("11_match_rules")
+
+[node name="Ball" parent="." unique_id=2058882879 instance=ExtResource("1_huivl")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.72, 1.65, 3.455)
+active = false
 
 [node name="Court" parent="." unique_id=217646986 instance=ExtResource("1_c8ygb")]
 
 [node name="Players" type="Node3D" parent="." unique_id=2069483414]
 
 [node name="Player1" parent="Players" unique_id=1357167432 instance=ExtResource("2_hvvs3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 4)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5.62428)
+move_speed = 4.0
 
 [node name="Player2" parent="Players" unique_id=309120936 instance=ExtResource("2_hvvs3")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 1, -4)
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 1, -6)
+screen_right_world_sign = -1.0
 
 [node name="RacketMesh" parent="Players/Player2/VisualRoot/RacketAnchor/Racket/AimPivot/SwingPivot" parent_id_path=PackedInt32Array(309120936, 57044754, 1718386755) index="0" unique_id=1618720129]
 mesh = SubResource("SphereMesh_huivl")
 
+[node name="RacketHandle" parent="Players/Player2/VisualRoot/RacketAnchor/Racket/AimPivot/SwingPivot" parent_id_path=PackedInt32Array(309120936, 57044754, 1718386755) index="1" unique_id=1027377183]
+mesh = SubResource("CylinderMesh_u8nn2")
+
+[node name="HitCollision" parent="Players/Player2/VisualRoot/RacketAnchor/Racket/AimPivot/SwingPivot/HitArea" parent_id_path=PackedInt32Array(309120936, 57044754, 536242235) index="0" unique_id=2135943144]
+shape = SubResource("SphereShape3D_u8nn2")
+
+[node name="AnimationPlayer" parent="Players/Player2/VisualRoot/RacketAnchor/Racket" parent_id_path=PackedInt32Array(309120936, 57044754) index="1" unique_id=1709144773]
+libraries/ = SubResource("AnimationLibrary_3ffts")
+
 [node name="LocalCamera" parent="." unique_id=1631060452 instance=ExtResource("2_5qb6a")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 5)
+transform = Transform3D(0.9304176, 0, 0.3665012, 0, 1, 0, -0.3665012, 0, 0.9304176, 1.635, 0.39058334, 5.9828596)
 
 [node name="MatchSystems" type="Node" parent="." unique_id=632512295]
 
 [node name="MatchState" type="Node" parent="MatchSystems" unique_id=634999160]
+script = ExtResource("5_a5woy")
 
 [node name="ScoreManager" type="Node" parent="MatchSystems" unique_id=1113757598]
+script = ExtResource("9_score_manager")
+rules = ExtResource("11_match_rules")
 
 [node name="ServeManager" type="Node" parent="MatchSystems" unique_id=638894061]
+script = ExtResource("6_vjsnx")
+rules = ExtResource("11_match_rules")
 
 [node name="CourtRules" type="Node" parent="MatchSystems" unique_id=1927658921]
+script = ExtResource("8_court_rules")
+rules = ExtResource("11_match_rules")
 
 [node name="KeyboardTestDriver" type="Node" parent="MatchSystems" unique_id=1997884282]
 script = ExtResource("4_hvvs3")
@@ -48,7 +132,12 @@ script = ExtResource("4_hvvs3")
 [node name="KeyboardAdapter" type="Node" parent="MatchSystems/KeyboardTestDriver" unique_id=966645992]
 script = ExtResource("1_5qb6a")
 
+[node name="ServeTestDriver" type="Node" parent="MatchSystems" unique_id=397528831]
+script = ExtResource("10_7ay66")
+
 [node name="Effects" type="Node3D" parent="." unique_id=1671217439]
+
+[node name="MatchHUD" parent="." unique_id=1729484748 instance=ExtResource("12_match_hud")]
 
 [editable path="Players/Player2"]
 [editable path="Players/Player2/VisualRoot/RacketAnchor/Racket"]

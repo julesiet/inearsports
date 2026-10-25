@@ -7,7 +7,7 @@ extends CharacterBody3D
 
 # Player 1 uses +1. Set Player 2's value to -1
 # when its camera faces the opposite way.
-@export var screen_right_world_sign: float = -1.0
+@export var screen_right_world_sign: float = 1.0
 
 var _frame: ControllerFrame = ControllerFrame.new()
 
