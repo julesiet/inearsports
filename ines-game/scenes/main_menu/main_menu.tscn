@@ -1,0 +1,126 @@
+[gd_scene format=3 uid="uid://cw82ehsjp2jt3"]
+
+[ext_resource type="Script" uid="uid://bpoia2hhua1v8" path="res://scripts/main_menu.gd" id="1_fsom3"]
+[ext_resource type="Texture2D" uid="uid://gdpdy8lry65g" path="res://scenes/main_menu/polkadot.png" id="1_ob46e"]
+[ext_resource type="FontFile" uid="uid://bhauuw1gt2lvm" path="res://scenes/main_menu/atlantia.ttf" id="3_uqeha"]
+[ext_resource type="FontFile" uid="uid://dwpmjhf0x2js4" path="res://scenes/main_menu/Handjet-VariableFont_ELGR,ELSH,wght.ttf" id="3_wem23"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mtai0"]
+texture = ExtResource("1_ob46e")
+modulate_color = Color(0.89059, 0.89059, 0.8905901, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_20pgw"]
+bg_color = Color(0, 0.5803922, 0.7490196, 0.6392157)
+corner_detail = 11
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lgk3g"]
+bg_color = Color(0, 0.28627452, 0.38039216, 0.5411765)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6d5s1"]
+bg_color = Color(0, 0.45882353, 0.59607846, 0.54901963)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ejgw5"]
+bg_color = Color(1.92523e-06, 0.4999606, 0.6512819, 0.59607846)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rmdxk"]
+bg_color = Color(0, 0.49803922, 0.6509804, 0.59607846)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_m22me"]
+bg_color = Color(0, 0.49803922, 0.6509804, 0.59607846)
+
+[node name="MainMenu" type="Control" unique_id=156303758]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 3.0
+offset_top = 1.0
+offset_right = 3.0
+offset_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="Panel" parent="." unique_id=979004756]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_mtai0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1000355390]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 100.0
+offset_top = -75.0
+offset_right = 392.0
+offset_bottom = 64.0
+grow_vertical = 2
+script = ExtResource("1_fsom3")
+
+[node name="newGame" type="Button" parent="VBoxContainer" unique_id=1837986483]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/line_spacing = 0
+theme_override_fonts/font = ExtResource("3_wem23")
+theme_override_font_sizes/font_size = 39
+theme_override_styles/normal = SubResource("StyleBoxFlat_20pgw")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_lgk3g")
+theme_override_styles/hover = SubResource("StyleBoxFlat_6d5s1")
+text = "Play"
+
+[node name="quitGame" type="Button" parent="VBoxContainer" unique_id=100319339]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 10
+theme_override_constants/line_spacing = 0
+theme_override_fonts/font = ExtResource("3_wem23")
+theme_override_font_sizes/font_size = 39
+theme_override_styles/normal = SubResource("StyleBoxFlat_ejgw5")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_rmdxk")
+theme_override_styles/hover = SubResource("StyleBoxFlat_m22me")
+text = "Quit"
+
+[node name="Label3" type="Label" parent="." unique_id=901018612]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 26.0
+offset_top = -242.0
+offset_right = 528.0
+offset_bottom = -50.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(5.679429e-06, 0.58197474, 0.75046045, 1)
+theme_override_fonts/font = ExtResource("3_uqeha")
+theme_override_font_sizes/font_size = 53
+text = "(i)NearSports"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label" type="Label" parent="." unique_id=1748975958]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 20.0
+offset_top = -247.0
+offset_right = 527.0
+offset_bottom = -55.0
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("3_uqeha")
+theme_override_font_sizes/font_size = 53
+text = "(i)NearSports"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1628713242]
+
+[connection signal="pressed" from="VBoxContainer/newGame" to="VBoxContainer" method="_on_button_pressed"]
+[connection signal="pressed" from="VBoxContainer/newGame" to="VBoxContainer" method="_on_new_game_pressed"]
+[connection signal="pressed" from="VBoxContainer/quitGame" to="VBoxContainer" method="_on_quit_game_pressed"]

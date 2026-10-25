@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bf4ugrlw850hx" path="res://scripts/input/keyboard_adapter.gd" id="1_5qb6a"]
 [ext_resource type="PackedScene" uid="uid://cqxw1w2kxsgqi" path="res://scenes/world/TennisCourt.tscn" id="1_c8ygb"]
+[ext_resource type="Script" uid="uid://cjfh2jjvl0cpg" path="res://scripts/tennis_match.gd" id="1_huivl"]
 [ext_resource type="PackedScene" uid="uid://bj28oxegdgy4g" path="res://scenes/camera/tennis_camera.tscn" id="2_5qb6a"]
 [ext_resource type="PackedScene" uid="uid://bxdqxp35pvo2x" path="res://scenes/player/tennis_player.tscn" id="2_hvvs3"]
 [ext_resource type="Script" uid="uid://7hijpbfhr2wd" path="res://scenes/world/keyboard_test_driver.gd" id="4_hvvs3"]
@@ -15,6 +16,7 @@ radius = 0.2
 height = 0.45
 
 [node name="TennisMatch" type="Node3D" unique_id=828309337]
+script = ExtResource("1_huivl")
 
 [node name="Court" parent="." unique_id=217646986 instance=ExtResource("1_c8ygb")]
 
