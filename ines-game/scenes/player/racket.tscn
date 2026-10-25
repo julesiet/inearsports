@@ -1,12 +1,15 @@
 [gd_scene format=3 uid="uid://bpgnxoudjoesw"]
 
+[ext_resource type="Script" uid="uid://daxjwac3p2v0j" path="res://scenes/player/racket_controller.gd" id="1_eevn8"]
+[ext_resource type="Script" uid="uid://5tfcnjy3t1ra" path="res://scripts/player/racket_contact.gd" id="2_3ffts"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qcu71"]
 albedo_color = Color(1, 0.116666675, 0, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_u8nn2"]
 material = SubResource("StandardMaterial3D_qcu71")
 radius = 0.2
-height = 0.45
+height = 0.65
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4i6dx"]
 albedo_color = Color(0.28, 0.28, 0.28, 1)
@@ -14,12 +17,12 @@ albedo_color = Color(0.28, 0.28, 0.28, 1)
 [sub_resource type="CylinderMesh" id="CylinderMesh_u8nn2"]
 material = SubResource("StandardMaterial3D_4i6dx")
 top_radius = 0.1
-bottom_radius = 0.06679688
+bottom_radius = 0.05
 height = 0.25
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_u8nn2"]
 margin = 0.0
-radius = 0.2
+radius = 0.3
 
 [sub_resource type="Animation" id="Animation_4i6dx"]
 length = 0.001
@@ -35,6 +38,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [Vector3(0.13439035, 0, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AimPivot/SwingPivot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
 
 [sub_resource type="Animation" id="Animation_eevn8"]
 resource_name = "swing_forehand"
@@ -46,10 +61,22 @@ tracks/0/path = NodePath("AimPivot/SwingPivot:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.16, 0.2, 0.22, 0.5),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.1, 0.16, 0.2, 0.22, 0.3, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector3(0.13439035, 0, 0), Vector3(0.2687807, -0.27052602, -0.13439035), Vector3(0.13439035, 0.2443461, -0.13439035), Vector3(0.13439035, 0.4886922, -0.13439035), Vector3(0.13439035, 0.7330383, 0), Vector3(0.13439035, 0, 0)]
+"values": [Vector3(0.13439035, 0, 0), Vector3(0.2687807, -0.27052602, -0.13439035), Vector3(0.13439035, 0.2443461, -0.13439035), Vector3(0.13439035, 0.4886922, -0.13439035), Vector3(0.13439035, 0.7330383, 0), Vector3(-0.13439035, 0.5235988, 0), Vector3(0.13439035, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("AimPivot/SwingPivot:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.16, 0.20000845, 0.22, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0.6), Vector3(0, 0.05, 0.15), Vector3(0, 0, -0.15), Vector3(0, 0, -0.25), Vector3(0.05, 0, -0.25), Vector3(0, 0, 0)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_3ffts"]
@@ -59,6 +86,7 @@ _data = {
 }
 
 [node name="Racket" type="Node3D" unique_id=57044754]
+script = ExtResource("1_eevn8")
 
 [node name="AimPivot" type="Node3D" parent="." unique_id=1618228611]
 
@@ -66,14 +94,16 @@ _data = {
 transform = Transform3D(1, 0, 0, 0, 0.9909832, -0.13398619, 0, 0.13398619, 0.9909832, 0, 0, 0)
 
 [node name="RacketMesh" type="MeshInstance3D" parent="AimPivot/SwingPivot" unique_id=1618720129]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.128966, 0, 0, 0)
+transform = Transform3D(0.9366722, 0.3502074, 0, -0.3502074, 0.9366722, 0, 0, 0, 0.128966, 0, 0, 0)
 mesh = SubResource("SphereMesh_u8nn2")
 
 [node name="RacketHandle" type="MeshInstance3D" parent="AimPivot/SwingPivot" unique_id=1027377183]
-transform = Transform3D(0.5044158, 0.5906057, 0, -0.36917657, 0.80696034, 0, 0, 0, 0.24206913, -0.16, -0.245, 0)
+transform = Transform3D(0.5766613, 0.38590604, 0, -0.24122265, 0.9225381, 0, 0, 0, 0.24206913, -0.115, -0.27, 0)
 mesh = SubResource("CylinderMesh_u8nn2")
 
 [node name="HitArea" type="Area3D" parent="AimPivot/SwingPivot" unique_id=536242235]
+script = ExtResource("2_3ffts")
+hit_radius = 0.7
 
 [node name="HitCollision" type="CollisionShape3D" parent="AimPivot/SwingPivot/HitArea" unique_id=2135943144]
 shape = SubResource("SphereShape3D_u8nn2")

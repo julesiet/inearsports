@@ -24,4 +24,4 @@ mesh = SubResource("CapsuleMesh_u8nn2")
 [node name="RacketAnchor" type="Node3D" parent="VisualRoot" unique_id=456657037]
 
 [node name="Racket" parent="VisualRoot/RacketAnchor" unique_id=57044754 instance=ExtResource("1_on7oo")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.585, 0.41, -0.775)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.585, 0.41, -0.495)
