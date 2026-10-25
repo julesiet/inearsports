@@ -1,11 +1,12 @@
 [gd_scene format=3 uid="uid://bj28oxegdgy4g"]
 
+[ext_resource type="Script" path="res://scripts/camera/tennis_camera.gd" id="1_camera"]
+
 [node name="CameraRig" type="Node3D" unique_id=1631060452]
+script = ExtResource("1_camera")
 
 [node name="FollowPivot" type="Node3D" parent="." unique_id=959561011]
 
 [node name="LookPivot" type="Node3D" parent="FollowPivot" unique_id=1699246119]
-transform = Transform3D(1, 0, 0, 0, 0.9702957, 0.2419219, 0, -0.2419219, 0.9702957, 0, 0, 0.165)
 
 [node name="Camera3D" type="Camera3D" parent="FollowPivot/LookPivot" unique_id=2140350070]
-transform = Transform3D(1, 0, 0, 0, 1.6753802, 0, 0, 0, 1, 0, 2, 1)
