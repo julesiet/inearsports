@@ -1,0 +1,112 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/results_screen.gd" id="1_results"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary"]
+bg_color = Color(0.54, 0.94, 0.38, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.71, 1, 0.54, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.055, 0.15, 0.19, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.23, 0.48, 0.48, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.09, 0.23, 0.25, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.54, 0.94, 0.38, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+
+[node name="ResultsScreen" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_results")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultsContent" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(460, 0)
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="WinnerLabel" type="Label" parent="CenterContainer/ResultsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.54, 0.94, 0.38, 1)
+theme_override_font_sizes/font_size = 42
+text = "WINNER: —"
+horizontal_alignment = 1
+
+[node name="FinalScoreLabel" type="Label" parent="CenterContainer/ResultsContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.98, 0.94, 1)
+theme_override_font_sizes/font_size = 22
+text = "FINAL SCORE: —"
+horizontal_alignment = 1
+
+[node name="RematchButton" type="Button" parent="CenterContainer/ResultsContent"]
+custom_minimum_size = Vector2(320, 58)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.035, 0.11, 0.08, 1)
+theme_override_colors/font_hover_color = Color(0.035, 0.11, 0.08, 1)
+theme_override_colors/font_pressed_color = Color(0.035, 0.11, 0.08, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
+text = "REMATCH"
+focus_neighbor_bottom = NodePath("../ReturnToLobbyButton")
+
+[node name="ReturnToLobbyButton" type="Button" parent="CenterContainer/ResultsContent"]
+custom_minimum_size = Vector2(320, 54)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+text = "RETURN TO LOBBY"
+focus_neighbor_top = NodePath("../RematchButton")

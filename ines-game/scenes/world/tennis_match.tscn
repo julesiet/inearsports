@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://bvlp3101x8qg6" path="res://scripts/match/serve_test_driver.gd" id="10_7ay66"]
 [ext_resource type="Resource" path="res://resources/match_rules.tres" id="11_match_rules"]
 [ext_resource type="PackedScene" uid="uid://dorafsbbuftbp" path="res://scenes/ui/match_hud.tscn" id="12_match_hud"]
+[ext_resource type="Script" uid="uid://cvxxfpyt0g1f3" path="res://scripts/multiplayer/match_network_sync.gd" id="13_match_network_sync"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7t325"]
 albedo_color = Color(0, 0.083333254, 1, 1)
@@ -125,6 +126,9 @@ rules = ExtResource("11_match_rules")
 [node name="CourtRules" type="Node" parent="MatchSystems" unique_id=1927658921]
 script = ExtResource("8_court_rules")
 rules = ExtResource("11_match_rules")
+
+[node name="MatchNetworkSync" type="Node" parent="MatchSystems" unique_id=1819362910]
+script = ExtResource("13_match_network_sync")
 
 [node name="KeyboardTestDriver" type="Node" parent="MatchSystems" unique_id=1997884282]
 script = ExtResource("4_hvvs3")

@@ -6,11 +6,15 @@ extends Node
 @onready var ball: Node = get_node("../../Ball")
 
 func _ready() -> void:
+	if NetworkManager.is_online and not NetworkManager.is_host:
+		return
 	await get_tree().process_frame
 	serve_manager.call("start_match")
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if NetworkManager.is_online and not NetworkManager.is_host:
+		return
 	if event.is_action_pressed("debug_point") and not event.is_echo():
 		var winner_id := int(match_root.get("current_hitter_id"))
 		serve_manager.call("award_point", winner_id, "debug point")

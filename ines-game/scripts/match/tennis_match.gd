@@ -3,6 +3,8 @@ extends Node3D
 # MatchState's CP-09 enum order is:
 # WAITING=0, SERVING=1, RALLY=2, POINT_AWARDED=3, FINISHED=4.
 const RALLY_PHASE := 2
+const RESULTS_SCENE := "res://scenes/ui/results_screen.tscn"
+const RESULTS_SCREEN_DELAY_SECONDS := 3.0
 
 # RacketController's CP-07 enum order is:
 # READY=0, WINDUP=1, ACTIVE=2, RECOVERY=3.
@@ -16,6 +18,7 @@ var last_hitter_id: int = 1
 @export var rules: MatchRules
 
 @onready var match_state: Node = $MatchSystems/MatchState
+@onready var score_manager: Node = $MatchSystems/ScoreManager
 @onready var ball: Node3D = $Ball
 @onready var court_rules: Node = $MatchSystems/CourtRules
 
@@ -28,8 +31,31 @@ var last_hitter_id: int = 1
 func _ready() -> void:
 	contact1.set("player_id", 1)
 	contact2.set("player_id", 2)
+	score_manager.match_ended.connect(_on_match_ended)
+
+
+func _on_match_ended(winner_id: int) -> void:
+	call_deferred("_open_results_screen", winner_id)
+
+
+func _open_results_screen(winner_id: int) -> void:
+	await get_tree().create_timer(RESULTS_SCREEN_DELAY_SECONDS).timeout
+	if not is_inside_tree():
+		return
+
+	get_tree().set_meta("last_match_result", {
+		"winner_id": winner_id,
+		"player1_score": int(score_manager.get("player1_points")),
+		"player2_score": int(score_manager.get("player2_points")),
+	})
+	var error := get_tree().change_scene_to_file(RESULTS_SCENE)
+	if error != OK:
+		get_tree().remove_meta("last_match_result")
+		push_error("Could not open results screen: %s" % RESULTS_SCENE)
 
 func _physics_process(_delta: float) -> void:
+	if NetworkManager.is_online and not NetworkManager.is_host:
+		return
 	if int(match_state.get("phase")) != RALLY_PHASE:
 		return
 

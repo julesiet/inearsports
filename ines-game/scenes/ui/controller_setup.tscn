@@ -1,0 +1,179 @@
+[gd_scene load_steps=5 format=3]
+
+[ext_resource type="Script" path="res://scripts/ui/controller_setup.gd" id="1_setup"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary"]
+bg_color = Color(0.54, 0.94, 0.38, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.71, 1, 0.54, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
+bg_color = Color(0.055, 0.15, 0.19, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.23, 0.48, 0.48, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
+bg_color = Color(0.09, 0.23, 0.25, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.54, 0.94, 0.38, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+content_margin_left = 24.0
+content_margin_top = 14.0
+content_margin_right = 24.0
+content_margin_bottom = 14.0
+
+[node name="ControllerSetup" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_setup")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 48.0
+offset_top = 32.0
+offset_right = -48.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SetupContent" type="VBoxContainer" parent="MarginContainer"]
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 14
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/SetupContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.95, 0.98, 0.94, 1)
+theme_override_font_sizes/font_size = 34
+text = "CONTROLLER SETUP"
+horizontal_alignment = 1
+
+[node name="ConnectionStatus" type="Label" parent="MarginContainer/SetupContent"]
+custom_minimum_size = Vector2(0, 42)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.54, 0.94, 0.38, 1)
+theme_override_font_sizes/font_size = 14
+text = "KEYBOARD READY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="InputModeSelector" type="OptionButton" parent="MarginContainer/SetupContent"]
+custom_minimum_size = Vector2(0, 48)
+layout_mode = 2
+theme_override_font_sizes/font_size = 16
+
+[node name="CalibrateButton" type="Button" parent="MarginContainer/SetupContent"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+text = "CALIBRATE NEUTRAL POSITION"
+
+[node name="MotionPreview" type="Control" parent="MarginContainer/SetupContent"]
+custom_minimum_size = Vector2(0, 68)
+layout_mode = 2
+
+[node name="TiltMeter" type="ProgressBar" parent="MarginContainer/SetupContent/MotionPreview"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 16.0
+offset_right = -60.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+min_value = -1.0
+max_value = 1.0
+value = 0.0
+show_percentage = false
+tooltip_text = "Tilt left or right to steer"
+
+[node name="SwingIndicator" type="ColorRect" parent="MarginContainer/SetupContent/MotionPreview"]
+layout_mode = 1
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -42.0
+offset_top = -18.0
+offset_right = -6.0
+offset_bottom = 18.0
+mouse_filter = 2
+color = Color(0.23, 0.48, 0.48, 1)
+tooltip_text = "Flashes when a swing is detected"
+
+[node name="SensitivityControl" type="HSlider" parent="MarginContainer/SetupContent"]
+custom_minimum_size = Vector2(0, 32)
+layout_mode = 2
+min_value = 0.5
+max_value = 2.0
+step = 0.1
+value = 1.0
+tooltip_text = "Adjust AirPod steering sensitivity"
+
+[node name="ContinueButton" type="Button" parent="MarginContainer/SetupContent"]
+custom_minimum_size = Vector2(0, 58)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.035, 0.11, 0.08, 1)
+theme_override_colors/font_hover_color = Color(0.035, 0.11, 0.08, 1)
+theme_override_colors/font_pressed_color = Color(0.035, 0.11, 0.08, 1)
+theme_override_font_sizes/font_size = 18
+theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
+text = "CONTINUE"
+focus_neighbor_bottom = NodePath("../BackButton")
+
+[node name="BackButton" type="Button" parent="MarginContainer/SetupContent"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
+theme_override_font_sizes/font_size = 16
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+text = "BACK"
+focus_neighbor_top = NodePath("../ContinueButton")
