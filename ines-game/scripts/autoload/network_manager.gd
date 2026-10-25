@@ -47,11 +47,11 @@ func host_game() -> bool:
 func join_game(host_ip: String) -> bool:
 	var address := host_ip.strip_edges()
 	if (
-		not IP.is_valid_ip_address(address)
+		not _is_valid_ipv4_address(address)
 		or address.begins_with("127.")
-		or address == "::1"
+		or address == "0.0.0.0"
 	):
-		_set_status("Enter the host Mac's LAN IP address.")
+		_set_status("Enter the host Mac's LAN IPv4 address.")
 		return false
 	if is_online:
 		leave_game()
@@ -68,6 +68,24 @@ func join_game(host_ip: String) -> bool:
 	is_host = false
 	is_connected = false
 	_set_status("Connecting to %s:%d…" % [address, PORT])
+	return true
+
+
+func _is_valid_ipv4_address(address: String) -> bool:
+	var octets := address.split(".", true)
+	if octets.size() != 4:
+		return false
+
+	for octet in octets:
+		if octet.is_empty() or octet.length() > 3:
+			return false
+		for index in range(octet.length()):
+			var character := octet.unicode_at(index)
+			if character < 48 or character > 57:
+				return false
+		var value := int(octet)
+		if value > 255:
+			return false
 	return true
 
 
