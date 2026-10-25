@@ -12,7 +12,8 @@ static func calculate_velocity(
 	ball_radius: float,
 	gravity: float,
 	aim_limit: float = 4.5,
-	racket_swing_direction: Vector3 = Vector3.ZERO
+	racket_swing_direction: Vector3 = Vector3.ZERO,
+	curve_acceleration: float = 0.0
 ) -> Vector3:
 	strength = clampf(strength, 0.0, 1.0)
 	aim = aim.clamp(Vector2(-1, -1), Vector2(1, 1))
@@ -21,21 +22,26 @@ static func calculate_velocity(
 	var toward_z := -1.0 if player_id == 1 else 1.0
 	var screen_right_world_sign := 1.0 if player_id == 1 else -1.0
 
-	var target_x := start_position.x + aim.x * aim_limit * screen_right_world_sign
+	var target_x := start_position.x + (
+		aim.x * aim_limit + racket_swing_direction.x * 2.0
+	) * screen_right_world_sign
+	var side_margin := ball_radius + 0.35
+	var x_limit := maxf(court_half_width - side_margin, 0.1)
 	target_x = clampf(
 		target_x,
-		-court_half_width + ball_radius,
-		court_half_width - ball_radius
+		-x_limit,
+		x_limit
 	)
 
-	var depth_fraction := clampf(0.45 + racket_swing_direction.z * 0.15, 0.25, 0.65)
+	var depth_fraction := clampf(0.52 + racket_swing_direction.z * 0.16, 0.42, 0.72)
 	var target_z := toward_z * court_half_length * depth_fraction
-	var target_y := clampf(
-		ball_radius + maxf(racket_swing_direction.y, -0.5) * 1.5,
-		ball_radius + 0.05,
-		2.5
+	# A slower swing gets more hang time and a higher arc; a faster swing is quicker and flatter.
+	var flight_time := clampf(
+		lerpf(1.8, 1.05, strength) + racket_swing_direction.y * 0.15,
+		0.9,
+		2.0
 	)
-	var flight_time := lerpf(1.75, 1.50, strength)
+	var target_y := ball_radius
 
 	var displacement := Vector3(
 		target_x - start_position.x,
@@ -44,7 +50,8 @@ static func calculate_velocity(
 	)
 
 	return Vector3(
-		displacement.x / flight_time,
+		(displacement.x - 0.5 * curve_acceleration * flight_time * flight_time)
+			/ flight_time,
 		(displacement.y + 0.5 * gravity * flight_time * flight_time) / flight_time,
 		displacement.z / flight_time
 	)

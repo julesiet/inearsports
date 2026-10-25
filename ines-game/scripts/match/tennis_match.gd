@@ -199,6 +199,12 @@ func apply_confirmed_shot(player_id: int, racket: Node) -> void:
 	var swing_direction: Vector3 = racket.get("active_swing_direction")
 	var ball_radius := float(ball.get("ball_radius"))
 	var gravity := float(ball.get("gravity"))
+	var curve_sign := 1.0 if player_id == 1 else -1.0
+	var curve_acceleration := clampf(
+		swing_direction.x * strength * curve_sign * 2.5,
+		-2.5,
+		2.5
+	)
 	var outgoing_velocity: Vector3 = ShotCalculator.calculate_velocity(
 		ball.global_position,
 		player_id,
@@ -209,14 +215,11 @@ func apply_confirmed_shot(player_id: int, racket: Node) -> void:
 		ball_radius,
 		gravity,
 		4.5,
-		swing_direction
+		swing_direction,
+		curve_acceleration
 	)
 	ball.call("set_velocity", outgoing_velocity)
-	var curve_sign := 1.0 if player_id == 1 else -1.0
-	ball.call(
-		"set_curve_acceleration",
-		swing_direction.x * strength * curve_sign * 2.5
-	)
+	ball.call("set_curve_acceleration", curve_acceleration)
 	last_hitter_id = player_id
 	current_hitter_id = 3 - player_id
 	if int(match_state.get("phase")) == SERVING_PHASE:

@@ -43,6 +43,10 @@ func _on_ground_bounced(at_position: Vector3) -> void:
 	var last_hitter_id := int(match_root.get("last_hitter_id"))
 	var receiver_id := int(match_root.get("current_hitter_id"))
 	var radius := float(ball.get("ball_radius"))
+	if _receiver_bounces >= rules.max_bounces:
+		_request_point(last_hitter_id, "second bounce")
+		return
+
 	var in_bounds := (
 		absf(at_position.x) <= rules.court_half_width + radius
 		and absf(at_position.z) <= rules.court_half_length + radius
@@ -64,8 +68,6 @@ func _on_ground_bounced(at_position: Vector3) -> void:
 	_receiver_bounces += 1
 	print("Receiver-side bounce ", _receiver_bounces, " at ", at_position,
 		"; last_hitter=", last_hitter_id, " receiver=", receiver_id)
-	if _receiver_bounces > rules.max_bounces:
-		_request_point(last_hitter_id, "second bounce")
 
 
 func _request_point(winner_id: int, reason: String) -> void:
