@@ -5,7 +5,17 @@ extends Node
 
 
 func _physics_process(_delta: float) -> void:
-	var frame: ControllerFrame = keyboard.read_frame()
+	var frame: ControllerFrame = ControllerManager.read_frame(keyboard)
+	if NetworkManager.is_online:
+		var local_player_id := int(SessionManager.local_player_id)
+		if local_player_id < 1 or local_player_id > 2:
+			return
+		var network_sync: Node = match_root.get_node("MatchSystems/MatchNetworkSync")
+		network_sync.call("apply_controller_frame", local_player_id, frame)
+		if not NetworkManager.is_host:
+			network_sync.call("send_controller_frame", frame)
+		return
+
 	var player_id := int(match_root.get("current_hitter_id"))
 	if player_id < 1 or player_id > 2:
 		return
