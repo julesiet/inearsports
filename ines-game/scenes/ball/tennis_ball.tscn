@@ -7,17 +7,49 @@ albedo_color = Color(1, 1, 0, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_u8nn2"]
 material = SubResource("StandardMaterial3D_qcu71")
-radius = 0.07
-height = 0.15
+radius = 0.06
+height = 0.12
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_olqn3"]
-albedo_color = Color(0.2, 0.2, 0.2, 1)
+albedo_color = Color(0.08, 0.08, 0.06, 0.34)
+transparency = 1
+shading_mode = 0
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_qcu71"]
 material = SubResource("StandardMaterial3D_olqn3")
-top_radius = 0.07
-bottom_radius = 0.07
+top_radius = 0.08
+bottom_radius = 0.08
 height = 0.001
+
+[sub_resource type="Gradient" id="Gradient_trail"]
+offsets = PackedFloat32Array(0, 1)
+colors = PackedColorArray(1, 0.9, 0.12, 0.9, 1, 0.65, 0.05, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_trail"]
+gradient = SubResource("Gradient_trail")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_trail"]
+direction = Vector3(0, 0, 1)
+spread = 12.0
+initial_velocity_min = 0.12
+initial_velocity_max = 0.32
+gravity = Vector3(0, 0, 0)
+scale_min = 0.2
+scale_max = 0.42
+color_ramp = SubResource("GradientTexture1D_trail")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_trail"]
+albedo_color = Color(1, 0.86, 0.12, 1)
+emission_enabled = true
+emission = Color(1, 0.78, 0.08, 1)
+emission_energy_multiplier = 1.4
+transparency = 1
+shading_mode = 0
+
+[sub_resource type="SphereMesh" id="SphereMesh_trail"]
+material = SubResource("StandardMaterial3D_trail")
+radius = 0.025
+height = 0.05
 
 [node name="TennisBall" type="Node3D" unique_id=2058882879]
 script = ExtResource("1_jenje")
@@ -28,7 +60,13 @@ script = ExtResource("1_jenje")
 mesh = SubResource("SphereMesh_u8nn2")
 
 [node name="BallTrail" type="GPUParticles3D" parent="VisualRoot" unique_id=693276015]
+emitting = false
+amount = 32
+lifetime = 0.32
+preprocess = 0.12
+local_coords = false
+process_material = SubResource("ParticleProcessMaterial_trail")
+draw_pass_1 = SubResource("SphereMesh_trail")
 
 [node name="BallShadow" type="MeshInstance3D" parent="VisualRoot" unique_id=1367282435]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0745, 0)
 mesh = SubResource("CylinderMesh_qcu71")

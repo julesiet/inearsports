@@ -164,6 +164,18 @@ func get_steering_value() -> float:
 	return clampf(roll_radians / STEERING_RANGE_RADIANS * sensitivity, -1.0, 1.0)
 
 
+func get_racket_offset() -> Vector3:
+	if input_mode != InputMode.AIRPODS or not is_streaming() or not _is_calibrated:
+		return Vector3.ZERO
+
+	var angles := (_neutral_orientation.inverse() * _current_orientation).get_euler()
+	return Vector3(
+		clampf(angles.y / STEERING_RANGE_RADIANS * sensitivity, -1.0, 1.0) * 0.4,
+		clampf(-angles.x / STEERING_RANGE_RADIANS * sensitivity, -1.0, 1.0) * 0.36,
+		clampf(-angles.z / STEERING_RANGE_RADIANS * sensitivity, -1.0, 1.0) * 0.35
+	)
+
+
 func read_frame(keyboard_adapter: KeyboardAdapter) -> ControllerFrame:
 	if input_mode == InputMode.KEYBOARD:
 		return keyboard_adapter.read_frame()
@@ -180,5 +192,6 @@ func read_frame(keyboard_adapter: KeyboardAdapter) -> ControllerFrame:
 		swing_strength,
 		_frame_sequence,
 		Time.get_ticks_msec(),
-		valid
+		valid,
+		get_racket_offset() if valid else Vector3.ZERO
 	)

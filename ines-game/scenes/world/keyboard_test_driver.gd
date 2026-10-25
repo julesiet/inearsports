@@ -24,9 +24,10 @@ func _physics_process(_delta: float) -> void:
 		"Players/Player%d" % player_id
 	)
 	player.set_controller_frame(frame)
+	var racket: Node = player.get_node("VisualRoot/RacketAnchor/Racket")
+	racket.call("set_controller_offset", frame.racket_offset)
 
 	if frame.swing_id >= 0:
-		var racket: Node = player.get_node("VisualRoot/RacketAnchor/Racket")
 		racket.call(
 			"request_swing",
 			frame.swing_id,

@@ -1,24 +1,26 @@
-[gd_scene format=3 uid="uid://cqxw1w2kxsgqi"]
+[gd_scene load_steps=17 format=3 uid="uid://cqxw1w2kxsgqi"]
+
+[ext_resource type="Script" path="res://scripts/world/tennis_net_visual.gd" id="1_net_visual"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_olqn3"]
 albedo_color = Color(0, 0.34901962, 1, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_u8nn2"]
 material = SubResource("StandardMaterial3D_olqn3")
-size = Vector3(10, 0.2, 24)
+size = Vector3(15, 0.2, 36)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qcu71"]
-size = Vector3(10, 0.2, 24)
+size = Vector3(15, 0.2, 36)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u8nn2"]
-albedo_color = Color(0.5, 0.5, 0.5, 1)
+albedo_color = Color(0.92, 0.92, 0.88, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_qcu71"]
 material = SubResource("StandardMaterial3D_u8nn2")
-size = Vector3(6, 2, 0.05)
+size = Vector3(9, 0.1, 0.06)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_u8nn2"]
-size = Vector3(6, 2, 0.05)
+size = Vector3(9, 2, 0.05)
 
 [sub_resource type="Environment" id="Environment_u8nn2"]
 background_mode = 2
@@ -66,8 +68,10 @@ mesh = SubResource("BoxMesh_u8nn2")
 shape = SubResource("BoxShape3D_qcu71")
 
 [node name="Net" type="StaticBody3D" parent="." unique_id=403224070]
+script = ExtResource("1_net_visual")
 
 [node name="NetMesh" type="MeshInstance3D" parent="Net" unique_id=1997987784]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.95, 0)
 mesh = SubResource("BoxMesh_qcu71")
 
 [node name="NetCollision" type="CollisionShape3D" parent="Net" unique_id=1571676888]
@@ -81,6 +85,7 @@ light_angular_distance = 75.2
 environment = SubResource("Environment_u8nn2")
 
 [node name="CourtLines" type="Node3D" parent="." unique_id=925799362]
+transform = Transform3D(1.5, 0, 0, 0, 1, 0, 0, 0, 1.5, 0, 0, 0)
 
 [node name="LeftSideLine" type="MeshInstance3D" parent="CourtLines" unique_id=995368606]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3, 0.201, 0)

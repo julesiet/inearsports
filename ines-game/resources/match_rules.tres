@@ -5,7 +5,7 @@
 [resource]
 script = ExtResource("1")
 points_to_win = 5
-court_half_width = 5.5
-court_half_length = 12.0
+court_half_width = 4.5
+court_half_length = 13.5
 max_bounces = 1
 point_reset_delay_s = 1.0

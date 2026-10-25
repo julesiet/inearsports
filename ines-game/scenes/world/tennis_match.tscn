@@ -16,27 +16,6 @@
 [ext_resource type="PackedScene" uid="uid://dorafsbbuftbp" path="res://scenes/ui/match_hud.tscn" id="12_match_hud"]
 [ext_resource type="Script" uid="uid://cvxxfpyt0g1f3" path="res://scripts/multiplayer/match_network_sync.gd" id="13_match_network_sync"]
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_7t325"]
-albedo_color = Color(0, 0.083333254, 1, 1)
-
-[sub_resource type="SphereMesh" id="SphereMesh_huivl"]
-material = SubResource("StandardMaterial3D_7t325")
-radius = 0.2
-height = 0.45
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4i6dx"]
-albedo_color = Color(0.28, 0.28, 0.28, 1)
-
-[sub_resource type="CylinderMesh" id="CylinderMesh_u8nn2"]
-material = SubResource("StandardMaterial3D_4i6dx")
-top_radius = 0.1
-bottom_radius = 0.06679688
-height = 0.25
-
-[sub_resource type="SphereShape3D" id="SphereShape3D_u8nn2"]
-margin = 0.0
-radius = 0.2
-
 [sub_resource type="Animation" id="Animation_4i6dx"]
 length = 0.001
 tracks/0/type = "value"
@@ -88,21 +67,14 @@ active = false
 [node name="Players" type="Node3D" parent="." unique_id=2069483414]
 
 [node name="Player1" parent="Players" unique_id=1357167432 instance=ExtResource("2_hvvs3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 5.62428)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 8.43642)
 move_speed = 4.0
+min_z = 1.0
 
 [node name="Player2" parent="Players" unique_id=309120936 instance=ExtResource("2_hvvs3")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 1, -6)
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 1, -9)
+max_z = -1.0
 screen_right_world_sign = -1.0
-
-[node name="RacketMesh" parent="Players/Player2/VisualRoot/RacketAnchor/Racket/AimPivot/SwingPivot" parent_id_path=PackedInt32Array(309120936, 57044754, 1718386755) index="0" unique_id=1618720129]
-mesh = SubResource("SphereMesh_huivl")
-
-[node name="RacketHandle" parent="Players/Player2/VisualRoot/RacketAnchor/Racket/AimPivot/SwingPivot" parent_id_path=PackedInt32Array(309120936, 57044754, 1718386755) index="1" unique_id=1027377183]
-mesh = SubResource("CylinderMesh_u8nn2")
-
-[node name="HitCollision" parent="Players/Player2/VisualRoot/RacketAnchor/Racket/AimPivot/SwingPivot/HitArea" parent_id_path=PackedInt32Array(309120936, 57044754, 536242235) index="0" unique_id=2135943144]
-shape = SubResource("SphereShape3D_u8nn2")
 
 [node name="AnimationPlayer" parent="Players/Player2/VisualRoot/RacketAnchor/Racket" parent_id_path=PackedInt32Array(309120936, 57044754) index="1" unique_id=1709144773]
 libraries/ = SubResource("AnimationLibrary_3ffts")

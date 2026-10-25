@@ -3,6 +3,7 @@ extends Node3D
 # MatchState's CP-09 enum order is:
 # WAITING=0, SERVING=1, RALLY=2, POINT_AWARDED=3, FINISHED=4.
 const RALLY_PHASE := 2
+const SERVING_PHASE := 1
 const RESULTS_SCENE := "res://scenes/ui/results_screen.tscn"
 const RESULTS_SCREEN_DELAY_SECONDS := 3.0
 
@@ -21,6 +22,7 @@ var last_hitter_id: int = 1
 @onready var score_manager: Node = $MatchSystems/ScoreManager
 @onready var ball: Node3D = $Ball
 @onready var court_rules: Node = $MatchSystems/CourtRules
+@onready var serve_manager: Node = $MatchSystems/ServeManager
 
 @onready var racket1: Node = $Players/Player1/VisualRoot/RacketAnchor/Racket
 @onready var contact1: Node = $Players/Player1/VisualRoot/RacketAnchor/Racket/AimPivot/SwingPivot/HitArea
@@ -54,14 +56,25 @@ func _open_results_screen(winner_id: int) -> void:
 		push_error("Could not open results screen: %s" % RESULTS_SCENE)
 
 func _physics_process(_delta: float) -> void:
+	_update_receiver_follow()
 	if NetworkManager.is_online and not NetworkManager.is_host:
 		return
-	if int(match_state.get("phase")) != RALLY_PHASE:
-		return
-
 	var ball_previous: Vector3 = ball.get("previous_position")
 	var ball_current: Vector3 = ball.global_position
 	var ball_radius: float = float(ball.get("ball_radius"))
+	var phase := int(match_state.get("phase"))
+	if phase == SERVING_PHASE:
+		var server_id := current_hitter_id
+		var server_racket: Node = racket1 if server_id == 1 else racket2
+		var server_contact: Node = contact1 if server_id == 1 else contact2
+		if _check_contact(
+			server_id, server_racket, server_contact,
+			ball_previous, ball_current, ball_radius
+		):
+			apply_confirmed_shot(server_id, server_racket)
+		return
+	if phase != RALLY_PHASE:
+		return
 
 	# Return immediately after a hit so one physics tick can't accept two.
 	if _check_contact(1, racket1, contact1, ball_previous, ball_current, ball_radius):
@@ -71,9 +84,90 @@ func _physics_process(_delta: float) -> void:
 	if _check_contact(2, racket2, contact2, ball_previous, ball_current, ball_radius):
 		apply_confirmed_shot(2, racket2)
 
+
+func _update_receiver_follow() -> void:
+	var should_follow := (
+		int(match_state.get("phase")) == RALLY_PHASE
+		and bool(ball.get("active"))
+		and (current_hitter_id == 1 or current_hitter_id == 2)
+	)
+	var ball_velocity: Vector3 = ball.get("velocity")
+
+	for player_id in [1, 2]:
+		var player: TennisPlayer = get_node("Players/Player%d" % player_id)
+		if not should_follow or player_id != current_hitter_id:
+			player.clear_ball_follow_target()
+			continue
+
+		var contact: Node3D = contact1 if player_id == 1 else contact2
+		var ball_intercept := _predict_next_racket_height_crossing(
+			contact.global_position.y,
+			ball_velocity
+		)
+		var racket_offset := contact.global_position - player.global_position
+		player.set_ball_follow_target(
+			ball_intercept - Vector3(racket_offset.x, 0.0, racket_offset.z)
+		)
+
+
+func _predict_next_racket_height_crossing(
+	target_y: float,
+	ball_velocity: Vector3
+) -> Vector3:
+	var position := ball.global_position
+	var gravity := float(ball.get("gravity"))
+	var ground_y := float(ball.get("ground_y")) + float(ball.get("ball_radius"))
+	if gravity <= 0.0:
+		return position
+
+	var vertical_speed := ball_velocity.y
+	var ground_discriminant := vertical_speed * vertical_speed + 2.0 * gravity * (position.y - ground_y)
+	if ground_discriminant < 0.0:
+		return position
+	var time_to_ground := maxf(
+		(vertical_speed + sqrt(ground_discriminant)) / gravity,
+		0.0
+	)
+
+	var intercept_time := -1.0
+	var height_discriminant := vertical_speed * vertical_speed + 2.0 * gravity * (position.y - target_y)
+	if height_discriminant >= 0.0:
+		var root := sqrt(height_discriminant)
+		for candidate_time in [
+			(vertical_speed - root) / gravity,
+			(vertical_speed + root) / gravity,
+		]:
+			if candidate_time >= 0.0 and candidate_time <= time_to_ground:
+				if intercept_time < 0.0 or candidate_time < intercept_time:
+					intercept_time = candidate_time
+
+	if intercept_time < 0.0:
+		var bounce_speed := sqrt(ground_discriminant) * float(ball.get("bounce_factor"))
+		var post_bounce_discriminant := (
+			bounce_speed * bounce_speed
+			- 2.0 * gravity * (target_y - ground_y)
+		)
+		if post_bounce_discriminant >= 0.0:
+			intercept_time = time_to_ground + (
+				bounce_speed - sqrt(post_bounce_discriminant)
+			) / gravity
+		else:
+			return position + Vector3(
+				ball_velocity.x * time_to_ground,
+				ground_y - position.y,
+				ball_velocity.z * time_to_ground
+			)
+
+	return Vector3(
+		position.x + ball_velocity.x * intercept_time,
+		target_y,
+		position.z + ball_velocity.z * intercept_time
+	)
+
 func apply_confirmed_shot(player_id: int, racket: Node) -> void:
 	var aim: Vector2 = racket.get("active_aim")
 	var strength: float = float(racket.get("active_swing_strength"))
+	var swing_direction: Vector3 = racket.get("active_swing_direction")
 	var ball_radius := float(ball.get("ball_radius"))
 	var gravity := float(ball.get("gravity"))
 	var outgoing_velocity: Vector3 = ShotCalculator.calculate_velocity(
@@ -84,12 +178,22 @@ func apply_confirmed_shot(player_id: int, racket: Node) -> void:
 		rules.court_half_width,
 		rules.court_half_length,
 		ball_radius,
-		gravity
+		gravity,
+		4.5,
+		swing_direction
 	)
 	ball.call("set_velocity", outgoing_velocity)
+	var curve_sign := 1.0 if player_id == 1 else -1.0
+	ball.call(
+		"set_curve_acceleration",
+		swing_direction.x * strength * curve_sign * 2.5
+	)
 	last_hitter_id = player_id
 	current_hitter_id = 3 - player_id
-	court_rules.call("reset_bounces")
+	if int(match_state.get("phase")) == SERVING_PHASE:
+		serve_manager.call("confirm_serve", player_id)
+	else:
+		court_rules.call("reset_bounces")
 	print("Confirmed shot player=", player_id, " aim=", aim,
 		" strength=", strength, " velocity=", outgoing_velocity)
 	
@@ -106,7 +210,7 @@ func _check_contact(
 		ball_previous,
 		ball_current,
 		ball_radius,
-		true, # Match is in RALLY because _physics_process checked it.
+		int(match_state.get("phase")) in [SERVING_PHASE, RALLY_PHASE],
 		player_id == current_hitter_id,
 		int(racket.get("state")) == ACTIVE_RACKET_STATE,
 		int(racket.get("active_swing_id"))

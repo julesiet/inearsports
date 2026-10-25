@@ -10,6 +10,7 @@ var swing_strength: float = 0.0
 var sequence: int = 0
 var time_msec: int = 0
 var valid: bool = true
+var racket_offset: Vector3 = Vector3.ZERO
 
 
 func _init(
@@ -19,7 +20,8 @@ func _init(
 	swing_strength_value: float = 0.0,
 	sequence_value: int = 0,
 	time_msec_value: int = 0,
-	valid_value: bool = true
+	valid_value: bool = true,
+	racket_offset_value: Vector3 = Vector3.ZERO
 ) -> void:
 	move_x = clampf(move_x_value, -1.0, 1.0)
 	aim = aim_value
@@ -28,3 +30,4 @@ func _init(
 	sequence = sequence_value
 	time_msec = time_msec_value
 	valid = valid_value
+	racket_offset = racket_offset_value

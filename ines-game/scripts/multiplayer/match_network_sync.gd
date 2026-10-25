@@ -42,9 +42,10 @@ func apply_controller_frame(player_id: int, frame: ControllerFrame) -> void:
 		return
 	var player: Node = player1 if player_id == 1 else player2
 	player.call("set_controller_frame", frame)
+	var racket: Node = racket1 if player_id == 1 else racket2
+	racket.call("set_controller_offset", frame.racket_offset)
 	if frame.swing_id < 0:
 		return
-	var racket: Node = racket1 if player_id == 1 else racket2
 	racket.call("request_swing", frame.swing_id, frame.swing_strength, frame.aim)
 
 
@@ -56,13 +57,25 @@ func send_controller_frame(frame: ControllerFrame) -> void:
 		or int(match_state.get("phase")) == FINISHED_PHASE
 	):
 		return
-	submit_controller_state.rpc_id(1, frame.move_x, frame.aim.x)
+	submit_controller_state.rpc_id(
+		1, frame.move_x, frame.aim.x,
+		frame.racket_offset.x, frame.racket_offset.y, frame.racket_offset.z
+	)
 	if frame.swing_id >= 0:
-		submit_swing_event.rpc_id(1, frame.swing_id, frame.swing_strength, frame.aim.x)
+		submit_swing_event.rpc_id(
+			1, frame.swing_id, frame.swing_strength, frame.aim.x,
+			frame.racket_offset.x, frame.racket_offset.y, frame.racket_offset.z
+		)
 
 
 @rpc("any_peer", "call_remote", "unreliable_ordered")
-func submit_controller_state(move_x: float, aim_x: float) -> void:
+func submit_controller_state(
+	move_x: float,
+	aim_x: float,
+	racket_x: float,
+	racket_y: float,
+	racket_z: float
+) -> void:
 	if not is_inside_tree() or multiplayer == null or not NetworkManager.is_host:
 		return
 	if int(match_state.get("phase")) == FINISHED_PHASE:
@@ -70,7 +83,10 @@ func submit_controller_state(move_x: float, aim_x: float) -> void:
 	var sender_id := multiplayer.get_remote_sender_id()
 	if SessionManager.player_id_for_peer(sender_id) != 2:
 		return
-	if not is_finite(move_x) or not is_finite(aim_x):
+	if (
+		not is_finite(move_x) or not is_finite(aim_x)
+		or not is_finite(racket_x) or not is_finite(racket_y) or not is_finite(racket_z)
+	):
 		return
 
 	_remote_state_sequence += 1
@@ -81,13 +97,21 @@ func submit_controller_state(move_x: float, aim_x: float) -> void:
 		0.0,
 		_remote_state_sequence,
 		Time.get_ticks_msec(),
-		true
+		true,
+		Vector3(racket_x, racket_y, racket_z)
 	)
 	apply_controller_frame(2, frame)
 
 
 @rpc("any_peer", "call_remote", "reliable")
-func submit_swing_event(swing_id: int, strength: float, aim_x: float) -> void:
+func submit_swing_event(
+	swing_id: int,
+	strength: float,
+	aim_x: float,
+	racket_x: float,
+	racket_y: float,
+	racket_z: float
+) -> void:
 	if not is_inside_tree() or multiplayer == null or not NetworkManager.is_host:
 		return
 	if int(match_state.get("phase")) == FINISHED_PHASE:
@@ -97,7 +121,10 @@ func submit_swing_event(swing_id: int, strength: float, aim_x: float) -> void:
 		return
 	if swing_id < 0 or swing_id <= _last_remote_swing_id:
 		return
-	if not is_finite(strength) or not is_finite(aim_x):
+	if (
+		not is_finite(strength) or not is_finite(aim_x)
+		or not is_finite(racket_x) or not is_finite(racket_y) or not is_finite(racket_z)
+	):
 		return
 
 	_last_remote_swing_id = swing_id
@@ -108,7 +135,8 @@ func submit_swing_event(swing_id: int, strength: float, aim_x: float) -> void:
 		clampf(strength, 0.0, 1.0),
 		_remote_state_sequence,
 		Time.get_ticks_msec(),
-		true
+		true,
+		Vector3(racket_x, racket_y, racket_z)
 	)
 	apply_controller_frame(2, frame)
 
@@ -123,8 +151,11 @@ func receive_match_snapshot(snapshot: Dictionary) -> void:
 	ball.set("active", snapshot["ball_active"])
 	player1.global_position = snapshot["player1_position"]
 	player2.global_position = snapshot["player2_position"]
+	racket1.call("set_controller_offset", snapshot["racket1_offset"])
+	racket2.call("set_controller_offset", snapshot["racket2_offset"])
 	match_root.set("current_hitter_id", int(snapshot["current_hitter_id"]))
 	match_root.set("last_hitter_id", int(snapshot["last_hitter_id"]))
+	ball.set("curve_acceleration", float(snapshot["ball_curve_acceleration"]))
 
 	_sync_racket(1, int(snapshot["racket1_swing_id"]), float(snapshot["racket1_strength"]), snapshot["racket1_aim"])
 	_sync_racket(2, int(snapshot["racket2_swing_id"]), float(snapshot["racket2_strength"]), snapshot["racket2_aim"])
@@ -135,6 +166,7 @@ func _make_snapshot() -> Dictionary:
 	return {
 		"ball_position": ball.global_position,
 		"ball_velocity": ball.get("velocity"),
+		"ball_curve_acceleration": ball.get("curve_acceleration"),
 		"ball_active": ball.get("active"),
 		"player1_position": player1.global_position,
 		"player2_position": player2.global_position,
@@ -147,9 +179,11 @@ func _make_snapshot() -> Dictionary:
 		"racket1_swing_id": racket1.get("active_swing_id"),
 		"racket1_strength": racket1.get("active_swing_strength"),
 		"racket1_aim": racket1.get("active_aim"),
+		"racket1_offset": racket1.get("controller_offset"),
 		"racket2_swing_id": racket2.get("active_swing_id"),
 		"racket2_strength": racket2.get("active_swing_strength"),
 		"racket2_aim": racket2.get("active_aim"),
+		"racket2_offset": racket2.get("controller_offset"),
 	}
 
 

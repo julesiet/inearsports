@@ -11,7 +11,8 @@ static func calculate_velocity(
 	court_half_length: float,
 	ball_radius: float,
 	gravity: float,
-	aim_limit: float = 3.0
+	aim_limit: float = 4.5,
+	racket_swing_direction: Vector3 = Vector3.ZERO
 ) -> Vector3:
 	strength = clampf(strength, 0.0, 1.0)
 	aim = aim.clamp(Vector2(-1, -1), Vector2(1, 1))
@@ -27,9 +28,14 @@ static func calculate_velocity(
 		court_half_width - ball_radius
 	)
 
-	var target_z := toward_z * court_half_length * 0.45
-	var target_y := ball_radius
-	var flight_time := lerpf(1.35, 1.10, strength)
+	var depth_fraction := clampf(0.45 + racket_swing_direction.z * 0.15, 0.25, 0.65)
+	var target_z := toward_z * court_half_length * depth_fraction
+	var target_y := clampf(
+		ball_radius + maxf(racket_swing_direction.y, -0.5) * 1.5,
+		ball_radius + 0.05,
+		2.5
+	)
+	var flight_time := lerpf(1.75, 1.50, strength)
 
 	var displacement := Vector3(
 		target_x - start_position.x,

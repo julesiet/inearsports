@@ -3,7 +3,7 @@ extends Area3D
 signal hit_confirmed(player_id: int, swing_id: int, contact_position: Vector3)
 
 @export var player_id: int = 1
-@export var hit_radius: float = 0.45
+@export var hit_radius: float = 0.7
 
 var _previous_hit_position: Vector3
 var _last_consumed_swing_id: int = -1

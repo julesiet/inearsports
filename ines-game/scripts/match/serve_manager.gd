@@ -6,12 +6,6 @@ const POINT_AWARDED := 3
 
 @export var rules: MatchRules
 
-@export var player1_start := Vector3(0, 1.2, 8)
-@export var player1_velocity := Vector3(0, 6, -8)
-
-@export var player2_start := Vector3(0, 1.2, -8)
-@export var player2_velocity := Vector3(0, 6, 8)
-
 @onready var match_state: Node = $"../MatchState"
 @onready var score_manager: Node = $"../ScoreManager"
 @onready var ball: Node3D = get_node("../../Ball")
@@ -36,24 +30,29 @@ func launch_serve() -> void:
 		print("Serve ignored: match is finished.")
 		return
 
-	var start_position: Vector3
-	var start_velocity: Vector3
-	if next_server_is_player1:
-		start_position = player1_start
-		start_velocity = player1_velocity
-	else:
-		start_position = player2_start
-		start_velocity = player2_velocity
-
-	ball.call("launch", start_position, start_velocity)
 	var server_id := 1 if next_server_is_player1 else 2
-	var receiver_id := 3 - server_id
-	match_root.call("set_current_hitter", receiver_id)
+	var racket_path := (
+		"Players/Player%d/VisualRoot/RacketAnchor/Racket/AimPivot/SwingPivot/HitArea"
+		% server_id
+	)
+	var contact: Node3D = match_root.get_node(racket_path)
+	var serve_direction_z := -1.0 if server_id == 1 else 1.0
+	var serve_position := contact.global_position + Vector3(0.0, 0.05, serve_direction_z * 0.22)
+	ball.call("stop")
+	ball.global_position = serve_position
+	ball.set("previous_position", serve_position)
+	ball.set("curve_acceleration", 0.0)
+	match_root.call("set_current_hitter", server_id)
 	get_parent().get_node("CourtRules").call("reset_bounces")
-	print("Serve launched by Player ", server_id,
-		" toward Player ", receiver_id,
-		". Ball instance ID: ", ball.get_instance_id())
+	print("Player ", server_id, " is ready to serve.")
 
+
+func confirm_serve(server_id: int) -> void:
+	if int(match_state.get("phase")) != SERVING:
+		return
+	if server_id != (1 if next_server_is_player1 else 2):
+		return
+	match_root.call("set_current_hitter", 3 - server_id)
 	if bool(match_state.call("transition_to", RALLY)):
 		next_server_is_player1 = not next_server_is_player1
 
