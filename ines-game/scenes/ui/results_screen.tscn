@@ -1,56 +1,63 @@
-[gd_scene load_steps=5 format=3]
+[gd_scene format=3 uid="uid://cnp4gre1r2hy0"]
 
-[ext_resource type="Script" path="res://scripts/ui/results_screen.gd" id="1_results"]
+[ext_resource type="Script" uid="uid://ciekac48bh047" path="res://scripts/ui/results_screen.gd" id="1_results"]
+[ext_resource type="Texture2D" uid="uid://s15uhse2wuab" path="res://scenes/ui/results_ui/sky.jpg" id="2_bt4av"]
+[ext_resource type="Texture2D" uid="uid://pc337o0gxh5r" path="res://scenes/ui/results_ui/nintendoswitchy.png" id="3_0km7x"]
+[ext_resource type="Texture2D" uid="uid://bxowk0vuakafv" path="res://scenes/ui/results_ui/mousebrah.png" id="4_r16b1"]
+[ext_resource type="FontFile" uid="uid://dwpmjhf0x2js4" path="res://scenes/main_menu/Handjet-VariableFont_ELGR,ELSH,wght.ttf" id="5_fxgmh"]
+
+[sub_resource type="StyleBoxTexture" id="StyleBoxTexture_mtai0"]
+texture = ExtResource("2_bt4av")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_primary"]
-bg_color = Color(0.54, 0.94, 0.38, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.71, 1, 0.54, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 content_margin_left = 24.0
 content_margin_top = 14.0
 content_margin_right = 24.0
 content_margin_bottom = 14.0
+bg_color = Color(0.89456576, 0.9595148, 0.9521907, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.5311985, 0.8032782, 0.83851266, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button"]
-bg_color = Color(0.055, 0.15, 0.19, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.23, 0.48, 0.48, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 content_margin_left = 24.0
 content_margin_top = 14.0
 content_margin_right = 24.0
 content_margin_bottom = 14.0
+bg_color = Color(0, 0.49803922, 0.6509804, 0.59607846)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.5803922, 0.7490196, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_button_hover"]
-bg_color = Color(0.09, 0.23, 0.25, 1)
-border_width_left = 2
-border_width_top = 2
-border_width_right = 2
-border_width_bottom = 2
-border_color = Color(0.54, 0.94, 0.38, 1)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
 content_margin_left = 24.0
 content_margin_top = 14.0
 content_margin_right = 24.0
 content_margin_bottom = 14.0
+bg_color = Color(0, 0.49803922, 0.6509804, 0.59607846)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0, 0.5803922, 0.7490196, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
-[node name="ResultsScreen" type="Control"]
+[node name="ResultsScreen" type="Control" unique_id=1200612457]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -59,67 +66,120 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_results")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="Panel" type="Panel" parent="." unique_id=449464496]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxTexture_mtai0")
 
-[node name="ResultsContent" type="VBoxContainer" parent="CenterContainer"]
+[node name="TextureRect" type="TextureRect" parent="." unique_id=40001529]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -341.0
+offset_top = -301.0
+offset_right = 351.0
+offset_bottom = 344.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_0km7x")
+expand_mode = 1
+
+[node name="TextureRect2" type="TextureRect" parent="." unique_id=1077761518]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 203.0
+offset_top = -314.0
+offset_right = 440.0
+offset_bottom = -116.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_r16b1")
+expand_mode = 1
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1508604096]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -199.0
+offset_top = -205.0
+offset_right = 261.0
+offset_bottom = 122.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResultsContent" type="VBoxContainer" parent="CenterContainer" unique_id=432289728]
 custom_minimum_size = Vector2(460, 0)
 layout_mode = 2
 theme_override_constants/separation = 18
 
-[node name="WinnerLabel" type="Label" parent="CenterContainer/ResultsContent"]
+[node name="WinnerLabel" type="Label" parent="CenterContainer/ResultsContent" unique_id=1604384167]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.54, 0.94, 0.38, 1)
-theme_override_font_sizes/font_size = 42
+theme_override_colors/font_color = Color(2.4546682e-06, 0.41294777, 0.5371371, 1)
+theme_override_fonts/font = ExtResource("5_fxgmh")
+theme_override_font_sizes/font_size = 49
 text = "WINNER: —"
 horizontal_alignment = 1
 
-[node name="FinalScoreLabel" type="Label" parent="CenterContainer/ResultsContent"]
+[node name="FinalScoreLabel" type="Label" parent="CenterContainer/ResultsContent" unique_id=590008861]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 22
+theme_override_colors/font_color = Color(1.6845763e-06, 0.42946503, 0.5580378, 1)
+theme_override_fonts/font = ExtResource("5_fxgmh")
+theme_override_font_sizes/font_size = 29
 text = "FINAL SCORE: —"
 horizontal_alignment = 1
 
-[node name="RematchButton" type="Button" parent="CenterContainer/ResultsContent"]
+[node name="RematchButton" type="Button" parent="CenterContainer/ResultsContent" unique_id=640418109]
 custom_minimum_size = Vector2(320, 58)
 layout_mode = 2
-theme_override_colors/font_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_hover_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_colors/font_pressed_color = Color(0.035, 0.11, 0.08, 1)
-theme_override_font_sizes/font_size = 18
-theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
-theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
-text = "REMATCH"
 focus_neighbor_bottom = NodePath("../ReturnToLobbyButton")
+theme_override_colors/font_color = Color(0, 0.41568628, 0.5411765, 1)
+theme_override_colors/font_focus_color = Color(0, 0.41568628, 0.5411765, 1)
+theme_override_colors/font_pressed_color = Color(0, 0.41568628, 0.5411765, 1)
+theme_override_colors/font_hover_color = Color(0, 0.41568628, 0.5411765, 1)
+theme_override_fonts/font = ExtResource("5_fxgmh")
+theme_override_font_sizes/font_size = 28
+theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
+text = "REMATCH"
 
-[node name="ReturnToLobbyButton" type="Button" parent="CenterContainer/ResultsContent"]
+[node name="ReturnToLobbyButton" type="Button" parent="CenterContainer/ResultsContent" unique_id=1926366365]
 custom_minimum_size = Vector2(320, 54)
 layout_mode = 2
+focus_neighbor_top = NodePath("../RematchButton")
 focus_neighbor_bottom = NodePath("../ReturnHomeButton")
 theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
 theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_fonts/font = ExtResource("5_fxgmh")
+theme_override_font_sizes/font_size = 26
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
-theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "RETURN TO LOBBY"
-focus_neighbor_top = NodePath("../RematchButton")
 
-[node name="ReturnHomeButton" type="Button" parent="CenterContainer/ResultsContent"]
+[node name="ReturnHomeButton" type="Button" parent="CenterContainer/ResultsContent" unique_id=1376882897]
 custom_minimum_size = Vector2(320, 54)
 layout_mode = 2
+focus_neighbor_top = NodePath("../ReturnToLobbyButton")
 theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
 theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
-theme_override_font_sizes/font_size = 16
+theme_override_fonts/font = ExtResource("5_fxgmh")
+theme_override_font_sizes/font_size = 26
 theme_override_styles/normal = SubResource("StyleBoxFlat_button")
-theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "RETURN HOME"
-focus_neighbor_top = NodePath("../ReturnToLobbyButton")
