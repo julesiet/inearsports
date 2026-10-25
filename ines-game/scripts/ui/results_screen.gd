@@ -1,5 +1,7 @@
 extends Control
 
+const MAIN_MENU_SCENE := "res://scenes/ui/main_menu.tscn"
+
 signal rematch_requested
 signal return_to_lobby_requested
 
@@ -7,6 +9,7 @@ signal return_to_lobby_requested
 @onready var final_score_label: Label = $CenterContainer/ResultsContent/FinalScoreLabel
 @onready var rematch_button: Button = $CenterContainer/ResultsContent/RematchButton
 @onready var return_to_lobby_button: Button = $CenterContainer/ResultsContent/ReturnToLobbyButton
+@onready var return_home_button: Button = $CenterContainer/ResultsContent/ReturnHomeButton
 
 var _winner_id := 0
 var _player1_score := 0
@@ -17,6 +20,7 @@ var _has_result := false
 func _ready() -> void:
 	rematch_button.pressed.connect(_on_rematch_pressed)
 	return_to_lobby_button.pressed.connect(_on_return_to_lobby_pressed)
+	return_home_button.pressed.connect(_on_return_home_pressed)
 	rematch_button.grab_focus()
 	_read_match_result_handoff()
 	_refresh_result_labels()
@@ -78,3 +82,10 @@ func _on_rematch_pressed() -> void:
 func _on_return_to_lobby_pressed() -> void:
 	return_to_lobby_requested.emit()
 	SessionManager.return_to_lobby()
+
+
+func _on_return_home_pressed() -> void:
+	SessionManager.leave_session()
+	var error := get_tree().change_scene_to_file(MAIN_MENU_SCENE)
+	if error != OK:
+		push_error("Could not return to the main menu.")

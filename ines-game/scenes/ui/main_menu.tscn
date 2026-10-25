@@ -116,7 +116,7 @@ text = "PLAY MATCH"
 custom_minimum_size = Vector2(300, 54)
 layout_mode = 2
 focus_neighbor_top = NodePath("../PlayButton")
-focus_neighbor_bottom = NodePath("../QuitButton")
+focus_neighbor_bottom = NodePath("../DebugButton")
 theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
 theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
 theme_override_font_sizes/font_size = 16
@@ -125,10 +125,23 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
 theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
 text = "CONTROLLER SETUP"
 
-[node name="QuitButton" type="Button" parent="CenterContainer/MenuContent" unique_id=531234604]
+[node name="DebugButton" type="Button" parent="CenterContainer/MenuContent"]
 custom_minimum_size = Vector2(300, 54)
 layout_mode = 2
 focus_neighbor_top = NodePath("../ControllerButton")
+focus_neighbor_bottom = NodePath("../QuitButton")
+theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
+theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_button")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_button_hover")
+theme_override_styles/hover = SubResource("StyleBoxFlat_button_hover")
+text = "HUD DEBUG (G = POINT)"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/MenuContent" unique_id=531234604]
+custom_minimum_size = Vector2(300, 54)
+layout_mode = 2
+focus_neighbor_top = NodePath("../DebugButton")
 theme_override_colors/font_color = Color(0.88, 0.94, 0.91, 1)
 theme_override_colors/font_hover_color = Color(0.95, 0.98, 0.94, 1)
 theme_override_font_sizes/font_size = 16
