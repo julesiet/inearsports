@@ -150,7 +150,7 @@ func set_ball_follow_target(target: Vector3, speed_multiplier: float = 1.0) -> v
 		global_position.y,
 		clampf(target.z, min_z, max_z)
 	)
-	_ball_follow_speed_multiplier = clampf(speed_multiplier, 0.75, 1.5)
+	_ball_follow_speed_multiplier = clampf(speed_multiplier, 0.6, 1.5)
 	_ball_follow_enabled = true
 
 

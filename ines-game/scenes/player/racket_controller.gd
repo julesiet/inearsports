@@ -28,6 +28,7 @@ var active_swing_is_backhand := false
 var controller_offset := Vector3.ZERO
 var active_swing_direction := Vector3.ZERO
 var _last_controller_motion := Vector3.ZERO
+var _last_controller_motion_msec := -1
 var _active_window_started_msec := -1
 
 func _ready() -> void:
@@ -51,9 +52,14 @@ func request_swing(
 	active_aim = aim.clamp(Vector2(-1, -1), Vector2(1, 1))
 	active_swing_direction = (
 		_last_controller_motion
-		if _last_controller_motion.length_squared() > 0.0001
-		else controller_offset.normalized()
+		if (
+			_last_controller_motion.length_squared() > 0.0001
+			and Time.get_ticks_msec() - _last_controller_motion_msec <= 600
+		)
+		else Vector3.ZERO
 	)
+	_last_controller_motion = Vector3.ZERO
+	_last_controller_motion_msec = -1
 	active_swing_is_backhand = active_swing_direction.x < -0.1
 	if absf(active_swing_direction.x) <= 0.1:
 		active_swing_is_backhand = active_aim.x < -0.2
@@ -70,6 +76,7 @@ func set_controller_offset(offset: Vector3) -> void:
 	var movement := bounded_offset - controller_offset
 	if movement.length_squared() > 0.0001:
 		_last_controller_motion = movement.normalized()
+		_last_controller_motion_msec = Time.get_ticks_msec()
 	controller_offset = bounded_offset
 	aim_pivot.position = controller_offset
 

@@ -23,7 +23,7 @@ static func calculate_velocity(
 	var screen_right_world_sign := 1.0 if player_id == 1 else -1.0
 
 	var target_x := start_position.x + (
-		aim.x * aim_limit + racket_swing_direction.x * (2.0 + strength * 1.25)
+		aim.x * aim_limit + racket_swing_direction.x * (3.0 + strength * 1.5)
 	) * screen_right_world_sign
 	var side_margin := ball_radius + 0.35
 	var x_limit := maxf(court_half_width - side_margin, 0.1)

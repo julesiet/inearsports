@@ -129,9 +129,9 @@ func _update_receiver_follow() -> void:
 			or (player_id == 2 and follow_target.z < player.global_position.z)
 		)
 		var bounced_once := int(court_rules.call("get_receiver_bounces")) == 1
-		var speed_multiplier := 0.88 if SessionManager.cpu_opponent and player_id == 2 else 1.0
+		var speed_multiplier := 0.68 if SessionManager.cpu_opponent and player_id == 2 else 1.0
 		if bounced_once and is_backpedaling:
-			var recovery_speed := 1.0 if SessionManager.cpu_opponent and player_id == 2 else 1.35
+			var recovery_speed := 0.78 if SessionManager.cpu_opponent and player_id == 2 else 1.35
 			speed_multiplier = maxf(speed_multiplier, recovery_speed)
 		player.set_ball_follow_target(follow_target, speed_multiplier)
 
