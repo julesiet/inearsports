@@ -129,9 +129,10 @@ func _update_receiver_follow() -> void:
 			or (player_id == 2 and follow_target.z < player.global_position.z)
 		)
 		var bounced_once := int(court_rules.call("get_receiver_bounces")) == 1
-		var speed_multiplier := 1.25 if SessionManager.cpu_opponent and player_id == 2 else 1.0
+		var speed_multiplier := 0.88 if SessionManager.cpu_opponent and player_id == 2 else 1.0
 		if bounced_once and is_backpedaling:
-			speed_multiplier = maxf(speed_multiplier, 1.35)
+			var recovery_speed := 1.0 if SessionManager.cpu_opponent and player_id == 2 else 1.35
+			speed_multiplier = maxf(speed_multiplier, recovery_speed)
 		player.set_ball_follow_target(follow_target, speed_multiplier)
 
 
@@ -199,6 +200,13 @@ func apply_confirmed_shot(player_id: int, racket: Node) -> void:
 	var aim: Vector2 = racket.get("active_aim")
 	var strength: float = float(racket.get("active_swing_strength"))
 	var swing_direction: Vector3 = racket.get("active_swing_direction")
+	var timing_quality := float(racket.call("get_timing_quality"))
+	var timing_error := 1.0 - timing_quality
+	strength *= lerpf(0.55, 1.0, timing_quality)
+	aim = (aim + Vector2(swing_direction.x, swing_direction.z) * timing_error * 0.2).clamp(
+		Vector2(-1.0, -1.0),
+		Vector2(1.0, 1.0)
+	)
 	var ball_radius := float(ball.get("ball_radius"))
 	var gravity := float(ball.get("gravity"))
 	var curve_sign := 1.0 if player_id == 1 else -1.0

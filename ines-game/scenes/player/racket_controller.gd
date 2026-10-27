@@ -28,6 +28,7 @@ var active_swing_is_backhand := false
 var controller_offset := Vector3.ZERO
 var active_swing_direction := Vector3.ZERO
 var _last_controller_motion := Vector3.ZERO
+var _active_window_started_msec := -1
 
 func _ready() -> void:
 	hit_area.monitoring = false
@@ -80,6 +81,7 @@ func _run_swing() -> void:
 
 	await get_tree().create_timer(windup_s).timeout
 	_set_state(SwingState.ACTIVE)
+	_active_window_started_msec = Time.get_ticks_msec()
 	hit_area.monitoring = true
 
 	await get_tree().create_timer(active_window_s).timeout
@@ -90,6 +92,19 @@ func _run_swing() -> void:
 	# swing_forehand must be non-looping and end at its neutral pose.
 	await animation_player.animation_finished
 	_set_state(SwingState.READY)
+	_active_window_started_msec = -1
+
+
+func get_timing_quality() -> float:
+	if state != SwingState.ACTIVE or _active_window_started_msec < 0:
+		return 0.0
+	var window_progress := clampf(
+		float(Time.get_ticks_msec() - _active_window_started_msec)
+			/ (active_window_s * 1000.0),
+		0.0,
+		1.0
+	)
+	return 1.0 - absf(window_progress - 0.5) * 2.0
 
 
 func _set_state(new_state: SwingState) -> void:

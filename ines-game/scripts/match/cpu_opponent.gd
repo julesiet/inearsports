@@ -44,7 +44,7 @@ func _physics_process(_delta: float) -> void:
 	var active_window := float(racket.get("active_window_s"))
 	var ball_radius := float(ball.get("ball_radius"))
 	var hit_radius := float(contact.get("hit_radius"))
-	var lead_time := windup + active_window * 0.5 + 0.08
+	var lead_time := maxf(windup + active_window * 0.5 - 0.04, 0.08)
 	var swing_range := hit_radius + ball_radius + closing_speed * lead_time
 	if distance > swing_range:
 		return
@@ -58,7 +58,7 @@ func _request_swing() -> void:
 	var aim_sign := signf(human_player.global_position.x)
 	if absf(human_player.global_position.x) < 1.0:
 		aim_sign = -1.0 if _rng.randf() < 0.5 else 1.0
-	var aim_x := clampf(aim_sign * 0.72 + _rng.randf_range(-0.1, 0.1), -0.85, 0.85)
+	var aim_x := clampf(aim_sign * 0.4 + _rng.randf_range(-0.22, 0.22), -0.7, 0.7)
 	var shot_aim := Vector2(aim_x, 0.0)
 	racket.call("set_controller_offset", Vector3.ZERO)
-	racket.call("request_swing", _next_swing_id, 0.78, shot_aim)
+	racket.call("request_swing", _next_swing_id, 0.58, shot_aim)
