@@ -10,6 +10,8 @@ var player1_ready := false
 var player2_ready := false
 var player2_connected := false
 var match_started := false
+var hud_debug_mode := false
+var cpu_opponent := false
 
 var _peer_to_player_id := {1: 1}
 
@@ -22,6 +24,8 @@ func _ready() -> void:
 
 
 func begin_host_session() -> void:
+	hud_debug_mode = false
+	cpu_opponent = false
 	local_player_id = 1
 	player1_ready = false
 	player2_ready = false
@@ -32,6 +36,8 @@ func begin_host_session() -> void:
 
 
 func begin_client_session() -> void:
+	hud_debug_mode = false
+	cpu_opponent = false
 	local_player_id = 2
 	player1_ready = false
 	player2_ready = false
@@ -43,6 +49,8 @@ func begin_client_session() -> void:
 
 func leave_session() -> void:
 	NetworkManager.leave_game()
+	hud_debug_mode = false
+	cpu_opponent = false
 	local_player_id = 1
 	player1_ready = false
 	player2_ready = false
@@ -50,6 +58,22 @@ func leave_session() -> void:
 	match_started = false
 	_peer_to_player_id = {1: 1}
 	lobby_state_changed.emit()
+
+
+func start_cpu_match() -> void:
+	NetworkManager.leave_game()
+	hud_debug_mode = false
+	cpu_opponent = true
+	local_player_id = 1
+	player1_ready = true
+	player2_ready = true
+	player2_connected = true
+	match_started = true
+	_peer_to_player_id = {1: 1}
+	var error := SceneTransitionManager.change_scene_to_file(MATCH_SCENE)
+	if error != OK:
+		match_started = false
+		match_start_failed.emit("Could not open the match scene.")
 
 
 func player_id_for_peer(peer_id: int) -> int:

@@ -176,6 +176,12 @@ func get_racket_offset() -> Vector3:
 	)
 
 
+func get_preview_orientation() -> Quaternion:
+	if input_mode != InputMode.AIRPODS or not is_streaming() or not _is_calibrated:
+		return Quaternion.IDENTITY
+	return (_neutral_orientation.inverse() * _current_orientation).normalized()
+
+
 func read_frame(keyboard_adapter: KeyboardAdapter) -> ControllerFrame:
 	if input_mode == InputMode.KEYBOARD:
 		return keyboard_adapter.read_frame()

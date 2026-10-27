@@ -1,6 +1,6 @@
 extends StaticBody3D
 
-const NET_WIDTH := 9.0
+const NET_WIDTH := 10.8
 const NET_HEIGHT := 0.9
 const NET_DEPTH := 0.018
 const HOLE_SPACING := 0.09

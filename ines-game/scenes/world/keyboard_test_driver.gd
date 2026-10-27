@@ -15,6 +15,14 @@ func _physics_process(_delta: float) -> void:
 		if not NetworkManager.is_host:
 			network_sync.call("send_controller_frame", frame)
 		return
+	if SessionManager.cpu_opponent:
+		var human: TennisPlayer = match_root.get_node("Players/Player1")
+		human.set_controller_frame(frame)
+		var human_racket: Node = human.get_node("VisualRoot/RacketAnchor/Racket")
+		human_racket.call("set_controller_offset", frame.racket_offset)
+		if frame.swing_id >= 0:
+			human_racket.call("request_swing", frame.swing_id, frame.swing_strength, frame.aim)
+		return
 
 	var player_id := int(match_root.get("current_hitter_id"))
 	if player_id < 1 or player_id > 2:

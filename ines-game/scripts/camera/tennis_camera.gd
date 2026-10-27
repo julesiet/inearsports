@@ -1,8 +1,8 @@
 extends Node3D
 
 @export_range(1.0, 8.0, 0.1) var camera_height := 3.5
-@export_range(4.0, 12.0, 0.1) var camera_distance := 7.0
-@export_range(4.0, 12.0, 0.1) var look_ahead_distance := 8.0
+@export_range(4.0, 12.0, 0.1) var camera_distance := 5.5
+@export_range(4.0, 12.0, 0.1) var look_ahead_distance := 7.0
 @export_range(0.5, 10.0, 0.1) var follow_smoothness := 3.0
 @export_range(0.5, 12.0, 0.1) var look_smoothness := 5.0
 

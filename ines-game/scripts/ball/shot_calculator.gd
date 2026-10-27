@@ -35,11 +35,11 @@ static func calculate_velocity(
 
 	var depth_fraction := clampf(0.52 + racket_swing_direction.z * 0.16, 0.42, 0.72)
 	var target_z := toward_z * court_half_length * depth_fraction
-	# A slower swing gets more hang time and a higher arc; a faster swing is quicker and flatter.
+	# Shots keep their timing-based strength, but travel more slowly with extra hang time.
 	var flight_time := clampf(
-		lerpf(1.8, 1.05, strength) + racket_swing_direction.y * 0.15,
-		0.9,
-		2.0
+		lerpf(2.25, 1.35, strength) + racket_swing_direction.y * 0.15,
+		1.2,
+		2.5
 	)
 	var target_y := ball_radius
 

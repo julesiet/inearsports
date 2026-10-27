@@ -260,3 +260,39 @@ stretch_mode = 0
 mouse_filter = 2
 visible = false
 z_index = 1
+
+[node name="ShaderDebugPanel" type="PanelContainer" parent="HUDRoot"]
+layout_mode = 0
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -270.0
+offset_top = 18.0
+offset_right = -18.0
+offset_bottom = 100.0
+z_index = 6
+theme_override_styles/panel = SubResource("StyleBoxFlat_message")
+visible = false
+
+[node name="ShaderDebugContent" type="VBoxContainer" parent="HUDRoot/ShaderDebugPanel"]
+layout_mode = 2
+theme_override_constants/separation = 2
+
+[node name="ShaderDebugLabel" type="Label" parent="HUDRoot/ShaderDebugPanel/ShaderDebugContent"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.96, 0.79, 1)
+theme_override_fonts/font = ExtResource("3_handjet_bold")
+theme_override_font_sizes/font_size = 18
+text = "VISUAL SHADER TEST"
+horizontal_alignment = 1
+
+[node name="ShaderPresetSelector" type="OptionButton" parent="HUDRoot/ShaderDebugPanel/ShaderDebugContent"]
+custom_minimum_size = Vector2(220, 36)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_handjet_medium")
+theme_override_font_sizes/font_size = 20
+theme_override_styles/normal = SubResource("StyleBoxFlat_message")
+theme_override_styles/hover = SubResource("StyleBoxFlat_message")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_message")
+text = "ORIGINAL MATCH"
+selected = 0

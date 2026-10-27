@@ -11,6 +11,8 @@ const PHASE_LABELS := ["WAITING", "SERVING", "RALLY", "POINT", "FINISHED"]
 @onready var message_banner: PanelContainer = $HUDRoot/MessageBanner
 @onready var centered_message: Label = $HUDRoot/MessageBanner/CenteredMessage
 @onready var cheer_hands: TextureRect = $HUDRoot/CheerHands
+@onready var shader_debug_panel: PanelContainer = $HUDRoot/ShaderDebugPanel
+@onready var shader_preset_selector: OptionButton = $HUDRoot/ShaderDebugPanel/ShaderDebugContent/ShaderPresetSelector
 
 var _last_player1_points := 0
 var _last_player2_points := 0
@@ -22,6 +24,15 @@ var _celebration_token := 0
 
 func _ready() -> void:
 	var match_root := get_parent()
+	shader_debug_panel.visible = SessionManager.hud_debug_mode
+	if SessionManager.hud_debug_mode:
+		shader_preset_selector.clear()
+		shader_preset_selector.add_item("ORIGINAL MATCH")
+		shader_preset_selector.add_item("CEL SHADING")
+		shader_preset_selector.add_item("CEL + RIM LIGHT")
+		shader_preset_selector.add_item("HALFTONE CEL")
+		shader_preset_selector.select(0)
+		shader_preset_selector.item_selected.connect(_on_shader_preset_selected)
 	var score_manager: Node = match_root.get_node("MatchSystems/ScoreManager")
 	var match_state: Node = match_root.get_node("MatchSystems/MatchState")
 
@@ -36,6 +47,10 @@ func _ready() -> void:
 		int(score_manager.get("player2_points"))
 	)
 	_on_phase_changed(int(match_state.get("phase")))
+
+
+func _on_shader_preset_selected(preset_index: int) -> void:
+	get_parent().get_node("MatchSystems/MatchShaderDebug").call("set_preset", preset_index)
 
 
 func _on_score_changed(player1_points: int, player2_points: int) -> void:

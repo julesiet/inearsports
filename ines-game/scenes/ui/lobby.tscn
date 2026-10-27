@@ -143,6 +143,21 @@ theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_disabled")
 text = "HOST A MATCH"
 
+[node name="CPUButton" type="Button" parent="MarginContainer/LobbyContent"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_colors/font_hover_color = Color(1, 1, 1, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_colors/font_disabled_color = Color(0.82, 0.88, 0.86, 1)
+theme_override_fonts/font = ExtResource("3_handjet_medium")
+theme_override_font_sizes/font_size = 26
+theme_override_styles/normal = SubResource("StyleBoxFlat_primary")
+theme_override_styles/hover = SubResource("StyleBoxFlat_primary")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_primary")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_disabled")
+text = "PLAY AGAINST CPU"
+
 [node name="JoinRow" type="HBoxContainer" parent="MarginContainer/LobbyContent"]
 layout_mode = 2
 theme_override_constants/separation = 10

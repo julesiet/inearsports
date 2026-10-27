@@ -3,6 +3,7 @@ extends Control
 const MAIN_MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 
 @onready var host_button: Button = $MarginContainer/LobbyContent/HostButton
+@onready var cpu_button: Button = $MarginContainer/LobbyContent/CPUButton
 @onready var ip_address_input: LineEdit = $MarginContainer/LobbyContent/JoinRow/IPAddressInput
 @onready var join_button: Button = $MarginContainer/LobbyContent/JoinRow/JoinButton
 @onready var connection_status: Label = $MarginContainer/LobbyContent/ConnectionStatus
@@ -14,6 +15,7 @@ const MAIN_MENU_SCENE := "res://scenes/ui/main_menu.tscn"
 
 func _ready() -> void:
 	host_button.pressed.connect(_on_host_pressed)
+	cpu_button.pressed.connect(_on_cpu_pressed)
 	join_button.pressed.connect(_on_join_pressed)
 	ready_button.pressed.connect(_on_ready_pressed)
 	start_match_button.pressed.connect(_on_start_match_pressed)
@@ -40,6 +42,10 @@ func _on_host_pressed() -> void:
 	if NetworkManager.host_game():
 		SessionManager.begin_host_session()
 	_refresh_lobby()
+
+
+func _on_cpu_pressed() -> void:
+	SessionManager.start_cpu_match()
 
 
 func _on_join_pressed() -> void:
@@ -79,6 +85,7 @@ func _on_match_start_failed(message: String) -> void:
 
 func _refresh_lobby() -> void:
 	host_button.disabled = NetworkManager.is_online
+	cpu_button.disabled = NetworkManager.is_online
 	join_button.disabled = NetworkManager.is_online
 	ip_address_input.editable = not NetworkManager.is_online
 	ready_button.disabled = not NetworkManager.is_connected

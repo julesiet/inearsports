@@ -97,6 +97,7 @@ func _on_controller_pressed() -> void:
 
 func _on_debug_pressed() -> void:
 	SessionManager.leave_session()
+	SessionManager.hud_debug_mode = true
 	var error := SceneTransitionManager.change_scene_to_file(MATCH_SCENE)
 	if error != OK:
 		_show_notice("Could not open the match debug scene. Check the Output panel for details.")

@@ -17,6 +17,8 @@
 [ext_resource type="Script" uid="uid://cvxxfpyt0g1f3" path="res://scripts/multiplayer/match_network_sync.gd" id="13_match_network_sync"]
 [ext_resource type="PackedScene" uid="uid://w3ottmp6is7l" path="res://assets/models/meowmeow.glb" id="14_player1_model"]
 [ext_resource type="PackedScene" uid="uid://0ctawxat5tx3" path="res://assets/models/croakcroak.glb" id="15_player2_model"]
+[ext_resource type="Script" path="res://scripts/match/match_shader_debug.gd" id="16_match_shader_debug"]
+[ext_resource type="Script" path="res://scripts/match/cpu_opponent.gd" id="17_cpu_opponent"]
 
 [sub_resource type="Animation" id="Animation_4i6dx"]
 length = 0.001
@@ -113,6 +115,12 @@ rules = ExtResource("11_match_rules")
 
 [node name="MatchNetworkSync" type="Node" parent="MatchSystems" unique_id=1819362910]
 script = ExtResource("13_match_network_sync")
+
+[node name="MatchShaderDebug" type="Node" parent="MatchSystems"]
+script = ExtResource("16_match_shader_debug")
+
+[node name="CPUOpponent" type="Node" parent="MatchSystems"]
+script = ExtResource("17_cpu_opponent")
 
 [node name="KeyboardTestDriver" type="Node" parent="MatchSystems" unique_id=1997884282]
 script = ExtResource("4_hvvs3")
